@@ -45,7 +45,9 @@ brew "rustup"
 brew "fnm"
 brew "bun"
 
-# Dev tools
+# Terminal & fonts
+cask "wezterm"
+cask "font-jetbrains-mono-nerd-font"
 brew "tmux"
 brew "neovim"
 brew "git"
@@ -121,7 +123,8 @@ sudo pacman -S --needed --noconfirm \
     yq \
     tldr \
     chezmoi \
-    base-devel
+    base-devel \
+    ttf-jetbrains-mono-nerd
 
 # AUR packages (via paru or yay)
 if command -v paru &> /dev/null; then
@@ -135,6 +138,7 @@ fi
 
 if [ -n "$AUR_HELPER" ]; then
     $AUR_HELPER -S --needed --noconfirm \
+        wezterm-git \
         supabase-bin \
         stripe-cli-bin \
         railway-bin \
