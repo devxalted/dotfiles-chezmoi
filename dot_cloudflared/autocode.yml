@@ -1,8 +1,0 @@
-tunnel: autocode
-credentials-file: /home/admin/.cloudflared/b1068953-911d-4c27-b737-12ab47af7ccc.json
-origincert: /home/admin/.cloudflared/exalted-cert.pem
-
-ingress:
-  - hostname: autocode.exalted.dev
-    service: http://localhost:8888
-  - service: http_status:404

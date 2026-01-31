@@ -1,8 +1,0 @@
-tunnel: cyrus
-credentials-file: /home/admin/.cloudflared/e125ee0d-575f-415f-acd4-4dc671ce0a34.json
-origincert: /home/admin/.cloudflared/termkit-cert.pem
-
-ingress:
-  - hostname: cyrus.termkit.dev
-    service: http://localhost:3456
-  - service: http_status:404
