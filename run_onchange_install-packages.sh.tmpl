@@ -20,6 +20,11 @@ if ! command -v brew &> /dev/null; then
 fi
 
 brew bundle --file=/dev/stdin <<EOF
+# Taps
+tap "supabase/tap"
+tap "stripe/stripe-cli"
+tap "dopplerhq/cli"
+
 # Modern CLI replacements
 brew "eza"
 brew "bat"
@@ -58,13 +63,13 @@ brew "just"
 brew "direnv"
 
 # Cloud/Platform CLIs
-brew "supabase/tap/supabase"
-brew "stripe/stripe-cli/stripe"
+brew "supabase"
+brew "stripe"
 brew "railway"
 
 # Secrets management
 cask "1password"
-brew "dopplerhq/cli/doppler"
+brew "doppler"
 
 # Utilities
 brew "curl"
