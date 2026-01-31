@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(wezterm:*)",
+      "Bash(env)"
+{{- if eq .chezmoi.os "linux" }},
+      "Bash(ldd:*)",
+      "Bash(strace:*)",
+      "Bash(journalctl:*)",
+      "Bash(systemctl:*)",
+      "Bash(pacman:*)"
+{{- end }}
+{{- if eq .chezmoi.os "darwin" }},
+      "Bash(brew:*)",
+      "Bash(launchctl:*)",
+      "Bash(defaults:*)"
+{{- end }}
+    ]
+  }
+}
