@@ -39,9 +39,16 @@ brew "dog"
 brew "fzf"
 brew "starship"
 
-# Dev tools
+# Languages & runtimes
+brew "python"
+brew "pipx"
+brew "go"
+brew "rustup"
+brew "deno"
 brew "fnm"
 brew "bun"
+
+# Dev tools
 brew "tmux"
 brew "neovim"
 brew "git"
@@ -57,6 +64,11 @@ brew "tokei"
 brew "supabase/tap/supabase"
 brew "stripe/stripe-cli/stripe"
 brew "railway"
+brew "flyctl"
+brew "netlify-cli"
+brew "cloudflare/cloudflare/cloudflared"
+brew "awscli"
+brew "doctl"
 
 # Utilities
 brew "curl"
@@ -103,6 +115,12 @@ sudo pacman -S --needed --noconfirm \
     dog \
     fzf \
     starship \
+    python \
+    python-pip \
+    python-pipx \
+    go \
+    rustup \
+    deno \
     fnm \
     bun \
     tmux \
@@ -132,7 +150,11 @@ sudo pacman -S --needed --noconfirm \
     xh \
     grex \
     bandwhich \
-    ngrok
+    ngrok \
+    cloudflared \
+    aws-cli-v2 \
+    doctl \
+    flyctl
 
 # AUR packages (via paru or yay)
 if command -v paru &> /dev/null; then
@@ -149,7 +171,8 @@ if [ -n "$AUR_HELPER" ]; then
         supabase-bin \
         stripe-cli-bin \
         vercel \
-        railway-bin
+        railway-bin \
+        netlify-cli-bin
 fi
 
 {{ end -}}
