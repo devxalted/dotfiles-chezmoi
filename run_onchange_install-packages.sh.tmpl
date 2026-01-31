@@ -50,7 +50,6 @@ brew "tmux"
 brew "neovim"
 brew "git"
 brew "lazygit"
-brew "lazydocker"
 brew "delta"
 brew "gh"
 brew "just"
@@ -67,15 +66,12 @@ brew "dopplerhq/cli/doppler"
 
 # Utilities
 brew "curl"
-brew "wget"
 brew "rsync"
 brew "mosh"
 brew "jq"
 brew "yq"
 brew "tldr"
 brew "chezmoi"
-brew "watchexec"
-brew "ngrok"
 EOF
 
 # Vercel needs npm install
@@ -110,22 +106,18 @@ sudo pacman -S --needed --noconfirm \
     neovim \
     git \
     lazygit \
-    lazydocker \
     git-delta \
     github-cli \
     just \
     direnv \
     curl \
-    wget \
     rsync \
     mosh \
     jq \
     yq \
     tldr \
     chezmoi \
-    base-devel \
-    watchexec \
-    ngrok
+    base-devel
 
 # AUR packages (via paru or yay)
 if command -v paru &> /dev/null; then
