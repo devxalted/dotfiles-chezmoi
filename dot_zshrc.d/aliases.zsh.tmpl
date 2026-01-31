@@ -61,23 +61,11 @@ alias backup-check='ls -lth /mnt/backup/arch-backup/dev/ | head -10'
 alias backup-size='du -sh /mnt/backup/arch-backup/*'
 {{- end }}
 
-# Dotfiles management
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias dfs='dotfiles status'
-alias dfa='dotfiles add'
-alias dfc='dotfiles commit'
-alias dfp='dotfiles push'
-alias dfl='dotfiles log --oneline --graph --decorate'
-alias dfd='dotfiles diff'
-
-# Quick commit and push
-dfcommit() {
-    dotfiles add -u
-    dotfiles commit -m "${1:-Update dotfiles}"
-    dotfiles push
-}
-
-# Manual sync trigger
-dfsync() {
-    ~/.local/bin/dotfiles-auto-commit
-}
+# Chezmoi dotfiles management
+alias cm='chezmoi'
+alias cms='chezmoi status'
+alias cmd='chezmoi diff'
+alias cma='chezmoi apply'
+alias cmu='chezmoi update'
+alias cme='chezmoi edit'
+alias cmcd='chezmoi cd'
