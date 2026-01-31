@@ -1,0 +1,8 @@
+# ========================================
+# Environment variables for all zsh instances
+# (sourced for interactive, non-interactive, login, non-login shells)
+# ========================================
+
+# Locale (required for mosh, etc.)
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
