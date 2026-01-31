@@ -74,9 +74,10 @@ brew "tldr"
 brew "chezmoi"
 EOF
 
-# Vercel needs npm install
-echo "Installing Vercel CLI..."
+# npm global packages
+echo "Installing npm global packages..."
 command -v vercel &> /dev/null || npm install -g vercel
+command -v claude &> /dev/null || npm install -g @anthropic-ai/claude-code
 
 {{ else if eq .chezmoi.os "linux" -}}
 # Arch Linux - pacman
@@ -133,11 +134,15 @@ if [ -n "$AUR_HELPER" ]; then
     $AUR_HELPER -S --needed --noconfirm \
         supabase-bin \
         stripe-cli-bin \
-        vercel \
         railway-bin \
         1password \
         doppler-cli-bin
 fi
+
+# npm global packages
+echo "Installing npm global packages..."
+command -v vercel &> /dev/null || npm install -g vercel
+command -v claude &> /dev/null || npm install -g @anthropic-ai/claude-code
 
 {{ end -}}
 {{ end -}}
