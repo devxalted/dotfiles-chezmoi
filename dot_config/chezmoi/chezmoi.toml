@@ -1,0 +1,9 @@
+# chezmoi configuration
+
+[edit]
+    command = "nvim"
+    apply = true      # Auto-apply after chezmoi edit
+
+[git]
+    autoCommit = true # Auto-commit on chezmoi add/re-add
+    autoPush = true   # Auto-push after commit
