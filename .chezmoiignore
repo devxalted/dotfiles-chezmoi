@@ -1,0 +1,10 @@
+# Ignore Linux-specific configs on macOS
+{{- if eq .chezmoi.os "darwin" }}
+.config/hypr/
+.config/dunst/
+{{- end }}
+
+# Ignore macOS-specific configs on Linux
+{{- if eq .chezmoi.os "linux" }}
+# (none yet)
+{{- end }}
