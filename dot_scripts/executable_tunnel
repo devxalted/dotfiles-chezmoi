@@ -1,0 +1,3 @@
+#!/bin/bash
+# Cloudflare Tunnel Manager wrapper script
+exec python3 "$(dirname "$0")/tunnel-manager.py" "$@"
