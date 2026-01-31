@@ -5,10 +5,18 @@ set -e
 echo "Installing packages..."
 
 {{ if eq .chezmoi.os "darwin" -}}
-# macOS - Homebrew
+# macOS - Xcode Command Line Tools + Homebrew
+if ! xcode-select -p &> /dev/null; then
+    echo "Installing Xcode Command Line Tools..."
+    xcode-select --install
+    echo "Please complete the Xcode installation and re-run chezmoi apply"
+    exit 0
+fi
+
 if ! command -v brew &> /dev/null; then
     echo "Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 brew bundle --no-lock --file=/dev/stdin <<EOF
@@ -45,6 +53,11 @@ brew "just"
 brew "direnv"
 brew "tokei"
 
+# Cloud/Platform CLIs
+brew "supabase/tap/supabase"
+brew "stripe/stripe-cli/stripe"
+brew "railway"
+
 # Utilities
 brew "curl"
 brew "wget"
@@ -56,7 +69,20 @@ brew "tree"
 brew "htop"
 brew "tldr"
 brew "chezmoi"
+
+# Extra dev tools
+brew "hyperfine"
+brew "glow"
+brew "watchexec"
+brew "xh"
+brew "grex"
+brew "bandwhich"
+brew "ngrok"
 EOF
+
+# Vercel needs npm install
+echo "Installing Vercel CLI..."
+command -v vercel &> /dev/null || npm install -g vercel
 
 {{ else if eq .chezmoi.os "linux" -}}
 # Arch Linux - pacman
@@ -99,7 +125,32 @@ sudo pacman -S --needed --noconfirm \
     htop \
     tldr \
     chezmoi \
-    base-devel
+    base-devel \
+    hyperfine \
+    glow \
+    watchexec \
+    xh \
+    grex \
+    bandwhich \
+    ngrok
+
+# AUR packages (via paru or yay)
+if command -v paru &> /dev/null; then
+    AUR_HELPER="paru"
+elif command -v yay &> /dev/null; then
+    AUR_HELPER="yay"
+else
+    echo "No AUR helper found, skipping AUR packages"
+    AUR_HELPER=""
+fi
+
+if [ -n "$AUR_HELPER" ]; then
+    $AUR_HELPER -S --needed --noconfirm \
+        supabase-bin \
+        stripe-cli-bin \
+        vercel \
+        railway-bin
+fi
 
 {{ end -}}
 {{ end -}}
