@@ -1,3 +1,6 @@
+# Claude Code settings (model preference is machine-specific)
+.claude/settings.json
+
 # Ignore Linux-specific configs on macOS
 {{- if eq .chezmoi.os "darwin" }}
 .config/hypr/
