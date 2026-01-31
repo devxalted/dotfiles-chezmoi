@@ -1,0 +1,75 @@
+#!/bin/bash
+
+set -e
+
+echo "Installing packages..."
+
+{{ if eq .chezmoi.os "darwin" -}}
+# macOS - Homebrew
+if ! command -v brew &> /dev/null; then
+    echo "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+brew bundle --no-lock --file=/dev/stdin <<EOF
+# CLI Tools
+brew "eza"
+brew "bat"
+brew "fd"
+brew "ripgrep"
+brew "bottom"
+brew "dust"
+brew "duf"
+brew "procs"
+brew "zoxide"
+brew "fzf"
+brew "starship"
+brew "fnm"
+brew "tmux"
+brew "neovim"
+brew "git"
+brew "curl"
+brew "wget"
+brew "jq"
+brew "tree"
+brew "htop"
+brew "lazygit"
+brew "delta"
+brew "gh"
+brew "chezmoi"
+EOF
+
+{{ else if eq .chezmoi.os "linux" -}}
+# Arch Linux - pacman
+{{ if lookPath "pacman" -}}
+sudo pacman -S --needed --noconfirm \
+    eza \
+    bat \
+    fd \
+    ripgrep \
+    bottom \
+    dust \
+    duf \
+    procs \
+    zoxide \
+    fzf \
+    starship \
+    fnm \
+    tmux \
+    neovim \
+    git \
+    curl \
+    wget \
+    jq \
+    tree \
+    htop \
+    lazygit \
+    git-delta \
+    github-cli \
+    chezmoi \
+    base-devel
+
+{{ end -}}
+{{ end -}}
+
+echo "Packages installed!"
