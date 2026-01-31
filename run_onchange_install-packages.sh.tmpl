@@ -12,30 +12,49 @@ if ! command -v brew &> /dev/null; then
 fi
 
 brew bundle --no-lock --file=/dev/stdin <<EOF
-# CLI Tools
+# Modern CLI replacements
 brew "eza"
 brew "bat"
 brew "fd"
 brew "ripgrep"
+brew "sd"
 brew "bottom"
+brew "btop"
 brew "dust"
 brew "duf"
 brew "procs"
 brew "zoxide"
+brew "curlie"
+brew "dog"
+
+# Fuzzy finder & prompt
 brew "fzf"
 brew "starship"
+
+# Dev tools
 brew "fnm"
+brew "bun"
 brew "tmux"
 brew "neovim"
 brew "git"
-brew "curl"
-brew "wget"
-brew "jq"
-brew "tree"
-brew "htop"
 brew "lazygit"
+brew "lazydocker"
 brew "delta"
 brew "gh"
+brew "just"
+brew "direnv"
+brew "tokei"
+
+# Utilities
+brew "curl"
+brew "wget"
+brew "rsync"
+brew "mosh"
+brew "jq"
+brew "yq"
+brew "tree"
+brew "htop"
+brew "tldr"
 brew "chezmoi"
 EOF
 
@@ -47,25 +66,38 @@ sudo pacman -S --needed --noconfirm \
     bat \
     fd \
     ripgrep \
+    sd \
     bottom \
+    btop \
     dust \
     duf \
     procs \
     zoxide \
+    curlie \
+    dog \
     fzf \
     starship \
     fnm \
+    bun \
     tmux \
     neovim \
     git \
-    curl \
-    wget \
-    jq \
-    tree \
-    htop \
     lazygit \
+    lazydocker \
     git-delta \
     github-cli \
+    just \
+    direnv \
+    tokei \
+    curl \
+    wget \
+    rsync \
+    mosh \
+    jq \
+    yq \
+    tree \
+    htop \
+    tldr \
     chezmoi \
     base-devel
 
