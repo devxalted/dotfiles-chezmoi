@@ -64,11 +64,10 @@ brew "tokei"
 brew "supabase/tap/supabase"
 brew "stripe/stripe-cli/stripe"
 brew "railway"
-brew "flyctl"
-brew "netlify-cli"
-brew "cloudflare/cloudflare/cloudflared"
-brew "awscli"
-brew "doctl"
+
+# Secrets management
+cask "1password-cli"
+brew "dopplerhq/cli/doppler"
 
 # Utilities
 brew "curl"
@@ -150,11 +149,7 @@ sudo pacman -S --needed --noconfirm \
     xh \
     grex \
     bandwhich \
-    ngrok \
-    cloudflared \
-    aws-cli-v2 \
-    doctl \
-    flyctl
+    ngrok
 
 # AUR packages (via paru or yay)
 if command -v paru &> /dev/null; then
@@ -172,7 +167,8 @@ if [ -n "$AUR_HELPER" ]; then
         stripe-cli-bin \
         vercel \
         railway-bin \
-        netlify-cli-bin
+        1password-cli \
+        doppler-cli-bin
 fi
 
 {{ end -}}
