@@ -61,6 +61,15 @@ alias backup-check='ls -lth /mnt/backup/arch-backup/dev/ | head -10'
 alias backup-size='du -sh /mnt/backup/arch-backup/*'
 {{- end }}
 
+# Tmux aliases
+alias t='tmux'
+alias ta='tmux attach'
+alias tl='tmux list-sessions'
+alias tn='tmux new -s'
+alias tk='tmux kill-session -t'
+alias tks='tmux kill-server'
+alias td='tmux detach'
+
 # Chezmoi dotfiles management
 alias cm='chezmoi'
 alias cms='chezmoi status'
