@@ -125,14 +125,20 @@ sudo pacman -S --needed --noconfirm \
     base-devel \
     ttf-jetbrains-mono-nerd
 
-# AUR packages (via paru or yay)
+# AUR helper (install paru if missing)
 if command -v paru &> /dev/null; then
     AUR_HELPER="paru"
 elif command -v yay &> /dev/null; then
     AUR_HELPER="yay"
 else
-    echo "No AUR helper found, skipping AUR packages"
-    AUR_HELPER=""
+    echo "Installing paru (AUR helper)..."
+    sudo pacman -S --needed --noconfirm git base-devel
+    tmpdir=$(mktemp -d)
+    git clone https://aur.archlinux.org/paru-bin.git "$tmpdir/paru-bin"
+    cd "$tmpdir/paru-bin" && makepkg -si --noconfirm
+    cd - > /dev/null
+    rm -rf "$tmpdir"
+    AUR_HELPER="paru"
 fi
 
 if [ -n "$AUR_HELPER" ]; then
