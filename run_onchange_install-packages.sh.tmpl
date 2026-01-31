@@ -106,7 +106,6 @@ sudo pacman -S --needed --noconfirm \
     python-pipx \
     go \
     rustup \
-    fnm \
     bun \
     tmux \
     neovim \
@@ -138,6 +137,7 @@ fi
 
 if [ -n "$AUR_HELPER" ]; then
     $AUR_HELPER -S --needed --noconfirm \
+        fnm-bin \
         wezterm-git \
         supabase-bin \
         stripe-cli-bin \
