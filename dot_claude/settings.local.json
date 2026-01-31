@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(wezterm:*)",
+      "Bash(env)",
+      "Bash(ldd:*)",
+      "Bash(kitty:*)",
+      "Bash(strace:*)",
+      "Bash(journalctl:*)"
+    ]
+  }
+}
