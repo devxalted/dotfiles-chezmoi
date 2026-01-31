@@ -1,0 +1,8 @@
+tunnel: linear-replacement
+credentials-file: /home/admin/.cloudflared/791980cd-3db9-4d33-b984-eaa96298a7be.json
+origincert: /home/admin/.cloudflared/exalted-cert.pem
+
+ingress:
+  - hostname: lr.exalted.dev
+    service: http://localhost:3004
+  - service: http_status:404

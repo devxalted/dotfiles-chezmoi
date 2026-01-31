@@ -1,0 +1,8 @@
+# External repositories managed by chezmoi
+
+[".config/nvim"]
+    type = "git-repo"
+    url = "https://github.com/devxalted/lvim.git"
+    refreshPeriod = "168h"  # Refresh weekly
+    clone.args = ["--depth", "1"]
+    pull.args = ["--ff-only"]

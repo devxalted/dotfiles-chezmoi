@@ -1,0 +1,8 @@
+tunnel: msu
+credentials-file: /home/admin/.cloudflared/26a5404d-e831-4fba-bc9b-0f2dedb88b05.json
+origincert: /home/admin/.cloudflared/exalted-cert.pem
+
+ingress:
+  - hostname: msu.exalted.dev
+    service: http://localhost:3001
+  - service: http_status:404

@@ -1,0 +1,83 @@
+# Modern CLI tool aliases (existing)
+alias ls='eza --icons'
+alias ll='eza -l --icons'
+alias la='eza -la --icons'
+alias cat='bat'
+alias find='fd'
+alias grep='rg'
+alias top='btm'
+alias du='dust'
+alias df='duf'
+alias ps='procs'
+alias cd='z'
+alias cy='claude --dangerously-skip-permissions'
+
+# Git aliases
+alias g='git'
+alias ga='git add'
+alias gc='git commit'
+alias gco='git checkout'
+alias gp='git push'
+alias gl='git pull'
+alias gs='git status'
+alias gd='git diff'
+alias glog='git log --oneline --graph --decorate --all'
+alias gb='git branch'
+alias gm='git merge'
+alias gst='git stash'
+alias gsp='git stash pop'
+
+# Development aliases
+alias npmg='npm list -g --depth=0'
+alias serve='python3 -m http.server'
+alias ports='netstat -tulanp 2>/dev/null || ss -tulanp'
+
+# System aliases
+alias myip='curl -s https://api.ipify.org'
+{{- if eq .chezmoi.os "darwin" }}
+alias localip="ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1"
+alias cleanup='brew cleanup --prune=all'
+{{- else }}
+alias localip='ip -4 addr show | grep -oP "(?<=inet\s)\d+(\.\d+){3}" | grep -v 127.0.0.1'
+alias cleanup='sudo pacman -Sc --noconfirm && paru -Sc --noconfirm 2>/dev/null || yay -Sc --noconfirm 2>/dev/null || true'
+{{- end }}
+alias speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -'
+
+# Convenience aliases
+alias h='history'
+alias c='clear'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias path='echo $PATH | tr ":" "\n"'
+alias reload='source ~/.zshrc'
+alias zshconfig='${EDITOR:-nano} ~/.zshrc'
+
+{{- if eq .chezmoi.os "linux" }}
+# SSD Backup monitoring (Linux only)
+alias backup-status='systemctl status backup-sync.service'
+alias backup-logs='tail -f ~/.local/share/lsyncd/lsyncd.log'
+alias backup-check='ls -lth /mnt/backup/arch-backup/dev/ | head -10'
+alias backup-size='du -sh /mnt/backup/arch-backup/*'
+{{- end }}
+
+# Dotfiles management
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias dfs='dotfiles status'
+alias dfa='dotfiles add'
+alias dfc='dotfiles commit'
+alias dfp='dotfiles push'
+alias dfl='dotfiles log --oneline --graph --decorate'
+alias dfd='dotfiles diff'
+
+# Quick commit and push
+dfcommit() {
+    dotfiles add -u
+    dotfiles commit -m "${1:-Update dotfiles}"
+    dotfiles push
+}
+
+# Manual sync trigger
+dfsync() {
+    ~/.local/bin/dotfiles-auto-commit
+}

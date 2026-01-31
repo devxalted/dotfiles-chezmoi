@@ -1,0 +1,8 @@
+tunnel: dev
+credentials-file: /home/admin/.cloudflared/7ef1d7ca-91eb-4f22-8201-d7fcc4b86f7b.json
+origincert: /home/admin/.cloudflared/exalted-cert.pem
+
+ingress:
+  - hostname: dev.quale.app
+    service: http://localhost:3000
+  - service: http_status:404

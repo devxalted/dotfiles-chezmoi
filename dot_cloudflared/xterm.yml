@@ -1,0 +1,8 @@
+tunnel: xterm
+credentials-file: /home/admin/.cloudflared/fc8b4ded-5f6f-41fa-9b8c-4066e161084e.json
+origincert: /home/admin/.cloudflared/termkit-cert.pem
+
+ingress:
+  - hostname: tty.termkit.dev
+    service: http://localhost:1234
+  - service: http_status:404

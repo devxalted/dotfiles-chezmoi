@@ -1,0 +1,8 @@
+tunnel: prd
+credentials-file: /home/admin/.cloudflared/a3e8f865-c3f7-4af1-926b-100a5d229d02.json
+origincert: /home/admin/.cloudflared/termkit-cert.pem
+
+ingress:
+  - hostname: prd.termkit.dev
+    service: http://localhost:3003
+  - service: http_status:404

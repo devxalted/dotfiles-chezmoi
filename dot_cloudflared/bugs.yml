@@ -1,0 +1,8 @@
+tunnel: bugs
+credentials-file: /home/admin/.cloudflared/4785755f-1cdf-4a04-8366-d36a8bf11829.json
+origincert: /home/admin/.cloudflared/exalted-cert.pem
+
+ingress:
+  - hostname: bugs.exalted.dev
+    service: http://localhost:3010
+  - service: http_status:404
