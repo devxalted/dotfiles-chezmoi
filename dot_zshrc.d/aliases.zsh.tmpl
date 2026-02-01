@@ -83,7 +83,7 @@ alias cmcd='chezmoi cd'
 
 # Archie TUI
 {{- if eq .chezmoi.hostname "archie-goodwynn" }}
-alias archie="openclaw tui --url ws://localhost:18789"
+alias archie="openclaw tui --url ws://100.123.23.104:18789"
 {{- else }}
 alias archie="ssh -t archie 'zsh -ic \"openclaw tui --url ws://100.123.23.104:18789\"'"
 {{- end }}
