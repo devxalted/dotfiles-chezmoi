@@ -1,0 +1,50 @@
+#!/bin/bash
+# Nightly package update script
+# Upgrades Homebrew formulae and casks, skips macOS system updates
+
+set -euo pipefail
+
+LOG_DIR="$HOME/.local/state/update-packages"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/$(date +%Y-%m-%d).log"
+STAMP_FILE="$LOG_DIR/.last-run"
+
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG_FILE"
+}
+
+# Skip if already ran in the last 20 hours (avoids double-run from RunAtLoad + schedule)
+if [[ -f "$STAMP_FILE" ]]; then
+    last_run=$(cat "$STAMP_FILE")
+    now=$(date +%s)
+    elapsed=$(( now - last_run ))
+    if (( elapsed < 72000 )); then
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Skipping — last run $(( elapsed / 3600 ))h ago" >> "$LOG_FILE"
+        exit 0
+    fi
+fi
+
+log "=== Package update started ==="
+
+# Homebrew
+if command -v /opt/homebrew/bin/brew &>/dev/null; then
+    log "Updating Homebrew..."
+    /opt/homebrew/bin/brew update 2>&1 | tee -a "$LOG_FILE"
+
+    log "Upgrading formulae..."
+    /opt/homebrew/bin/brew upgrade 2>&1 | tee -a "$LOG_FILE"
+
+    log "Upgrading casks..."
+    /opt/homebrew/bin/brew upgrade --cask 2>&1 | tee -a "$LOG_FILE"
+
+    log "Cleaning up..."
+    /opt/homebrew/bin/brew cleanup --prune=7 2>&1 | tee -a "$LOG_FILE"
+fi
+
+# Clean up logs older than 30 days
+find "$LOG_DIR" -name "*.log" -mtime +30 -delete 2>/dev/null || true
+
+# Record successful run
+date +%s > "$STAMP_FILE"
+
+log "=== Package update finished ==="
