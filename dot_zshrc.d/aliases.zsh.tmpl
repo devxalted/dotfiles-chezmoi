@@ -1,16 +1,18 @@
-# Modern CLI tool aliases (existing)
+# Modern CLI tool aliases
 alias ls='eza --icons'
 alias ll='eza -l --icons'
 alias la='eza -la --icons'
 alias cat='bat'
 alias find='fd'
-alias grep='rg'
-alias top='btm'
 alias du='dust'
 alias df='duf'
 alias ps='procs'
 alias cd='z'
 alias cy='claude --dangerously-skip-permissions'
+{{- if eq .chezmoi.os "linux" }}
+alias grep='rg'
+alias top='btm'
+{{- end }}
 
 # Git aliases
 alias g='git'
@@ -31,7 +33,11 @@ alias gsp='git stash pop'
 alias npmg='npm list -g --depth=0'
 alias python='python3'
 alias serve='python3 -m http.server'
-alias ports='netstat -tulanp 2>/dev/null || ss -tulanp'
+{{- if eq .chezmoi.os "darwin" }}
+alias ports='lsof -iTCP -sTCP:LISTEN -n -P'
+{{- else }}
+alias ports='ss -tulanp'
+{{- end }}
 
 # System aliases
 alias myip='curl -s https://api.ipify.org'

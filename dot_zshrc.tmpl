@@ -1,16 +1,10 @@
-# ========================================
-# Locale (required for mosh, etc.)
-# ========================================
-export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
+# Locale already set in .zshenv
+
+# Deduplicate PATH entries
+typeset -U path
 
 {{- if eq .chezmoi.os "darwin" }}
-# ========================================
-# Fix SSH TERM compatibility
-# ========================================
-# Some terminal emulators (wezterm, etc.) set TERM values that
-# aren't recognized on remote machines - fall back to xterm-256color
-[[ "$TERM" == "wezterm" ]] && export TERM=xterm-256color
+# TERM compatibility handled directly in wezterm config
 {{- end }}
 
 # ========================================
@@ -72,7 +66,6 @@ setopt sharehistory
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
 setopt hist_save_no_dups
-setopt hist_ignore_dups
 setopt hist_find_no_dups
 
 # Directory navigation
@@ -104,7 +97,7 @@ unsetopt list_beep
 autoload -Uz compinit
 
 # Load compinit with cache for faster startup
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
   compinit
 else
   compinit -C

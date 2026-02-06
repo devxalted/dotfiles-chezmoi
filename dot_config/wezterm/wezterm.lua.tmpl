@@ -30,7 +30,6 @@ config.window_padding = {
 
 -- Disable tab bar for clean look
 config.enable_tab_bar = false
-config.hide_tab_bar_if_only_one_tab = true
 
 -- Cursor
 config.default_cursor_style = 'BlinkingBar'
@@ -63,7 +62,7 @@ config.enable_wayland = true
 config.adjust_window_size_when_changing_font_size = false
 config.warn_about_missing_glyphs = false
 
--- Set TERM for proper tmux compatibility
-config.term = 'wezterm'
+-- Set TERM for compatibility (wezterm TERM not recognized on remote machines)
+config.term = 'xterm-256color'
 
 return config
