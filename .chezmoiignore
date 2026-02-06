@@ -9,5 +9,6 @@
 
 # Ignore macOS-specific configs on Linux
 {{- if eq .chezmoi.os "linux" }}
-# (none yet)
+.config/karabiner/
+.config/skhd/
 {{- end }}

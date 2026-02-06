@@ -73,6 +73,9 @@ brew "railway"
 cask "1password"
 brew "doppler"
 
+# Networking
+cask "tailscale"
+
 # Utilities
 brew "curl"
 brew "rsync"
@@ -143,7 +146,8 @@ sudo pacman -S --needed --noconfirm \
     tldr \
     chezmoi \
     base-devel \
-    ttf-jetbrains-mono-nerd
+    ttf-jetbrains-mono-nerd \
+    keyd
 
 # AUR helper (install paru if missing)
 if command -v paru &> /dev/null; then
@@ -169,7 +173,8 @@ if [ -n "$AUR_HELPER" ]; then
         stripe-cli-bin \
         railwayapp-cli \
         1password \
-        doppler-cli-bin
+        doppler-cli-bin \
+        tailscale
 fi
 
 # npm global packages
