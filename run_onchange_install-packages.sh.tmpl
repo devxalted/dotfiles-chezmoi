@@ -19,8 +19,10 @@ if ! command -v brew &> /dev/null; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-brew bundle --file=/dev/stdin <<EOF
+BREWFILE=$(mktemp)
+cat > "$BREWFILE" <<'BREWEOF'
 # Taps
+tap "oven-sh/bun"
 tap "supabase/tap"
 tap "stripe/stripe-cli"
 tap "dopplerhq/cli"
@@ -79,11 +81,24 @@ brew "jq"
 brew "yq"
 brew "tldr"
 brew "chezmoi"
-EOF
+BREWEOF
+brew bundle --file="$BREWFILE"
+rm -f "$BREWFILE"
+
+# Set up Node.js via fnm
+if command -v fnm &> /dev/null; then
+    eval "$(fnm env)"
+    if ! fnm list | grep -q "v"; then
+        echo "Installing Node.js LTS via fnm..."
+        fnm install --lts
+    fi
+    fnm default lts-latest
+    eval "$(fnm env)"
+fi
 
 # npm global packages
 echo "Installing npm global packages..."
-command -v vercel &> /dev/null || npm install -g vercel
+command -v npm &> /dev/null && { command -v vercel &> /dev/null || npm install -g vercel; }
 
 # Claude Code
 echo "Installing Claude Code..."
