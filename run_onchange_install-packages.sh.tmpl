@@ -188,4 +188,15 @@ command -v claude &> /dev/null || curl -fsSL https://claude.ai/install.sh | sh
 {{ end -}}
 {{ end -}}
 
+# TPM (tmux plugin manager)
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+    echo "Installing TPM..."
+    git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+    # Auto-install plugins if tmux is available
+    if command -v tmux &> /dev/null; then
+        echo "Installing tmux plugins..."
+        "$HOME/.tmux/plugins/tpm/bin/install_plugins"
+    fi
+fi
+
 echo "Packages installed!"
