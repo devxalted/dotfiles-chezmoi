@@ -1,0 +1,100 @@
+#!/bin/bash
+set -e
+
+# dev-sync: Push/Pull WIP without polluting git history
+# Uses ephemeral sync/<branch> branches for transferring uncommitted work
+
+die() { echo "error: $*" >&2; exit 1; }
+
+# Ensure we're in a git repo
+git rev-parse --is-inside-work-tree &>/dev/null || die "not a git repository"
+
+BRANCH=$(git symbolic-ref --short HEAD)
+SYNC_BRANCH="sync/$BRANCH"
+
+cmd_push() {
+    local remote
+    remote=$(git config "branch.$BRANCH.remote" 2>/dev/null || echo "origin")
+
+    # 1. Push any unpushed commits on current branch
+    if git config "branch.$BRANCH.merge" &>/dev/null; then
+        echo "Pushing $BRANCH..."
+        git push "$remote" "$BRANCH" 2>/dev/null || true
+    else
+        echo "Pushing $BRANCH (setting upstream)..."
+        git push -u "$remote" "$BRANCH" 2>/dev/null || true
+    fi
+
+    # 2. If uncommitted changes exist, push them to sync branch
+    if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
+        echo "No uncommitted changes to sync."
+        return
+    fi
+
+    echo "Syncing uncommitted changes to $SYNC_BRANCH..."
+
+    # Stash everything including untracked files
+    git stash push -u -m "dev-sync temp" --quiet
+
+    # Create/reset sync branch from current branch
+    git checkout -B "$SYNC_BRANCH" "$BRANCH" --quiet
+
+    # Apply stash onto sync branch
+    git stash apply --quiet
+
+    # Commit everything
+    git add -A
+    git commit -m "WIP: dev-sync from $(hostname) at $(date '+%Y-%m-%d %H:%M:%S')" --quiet
+
+    # Force push sync branch
+    git push "$remote" "$SYNC_BRANCH" --force --quiet
+
+    # Return to original branch and restore working tree
+    git checkout "$BRANCH" --quiet
+    git stash pop --quiet
+
+    echo "Done! Uncommitted changes pushed to $SYNC_BRANCH"
+}
+
+cmd_pull() {
+    local remote
+    remote=$(git config "branch.$BRANCH.remote" 2>/dev/null || echo "origin")
+
+    # 1. Pull current branch
+    echo "Pulling $BRANCH..."
+    git pull "$remote" "$BRANCH" 2>/dev/null || true
+
+    # 2. Check for sync branch on remote
+    git fetch "$remote" --quiet 2>/dev/null
+
+    if ! git ls-remote --exit-code "$remote" "refs/heads/$SYNC_BRANCH" &>/dev/null; then
+        echo "No sync branch found."
+        return
+    fi
+
+    echo "Applying WIP from $SYNC_BRANCH..."
+
+    # Fetch the sync branch
+    git fetch "$remote" "$SYNC_BRANCH" --quiet
+
+    # Apply the diff between current branch and sync branch as uncommitted changes
+    git diff "$BRANCH" "$remote/$SYNC_BRANCH" | git apply --allow-empty
+
+    # Delete the sync branch remotely and locally
+    git push "$remote" --delete "$SYNC_BRANCH" --quiet 2>/dev/null
+    git branch -D "$SYNC_BRANCH" --quiet 2>/dev/null || true
+
+    echo "Done! WIP changes applied and sync branch cleaned up."
+}
+
+case "${1:-}" in
+    push) cmd_push ;;
+    pull) cmd_pull ;;
+    *)
+        echo "Usage: dev-sync <push|pull>"
+        echo ""
+        echo "  push  Push uncommitted work to sync/<branch> on remote"
+        echo "  pull  Pull and restore WIP from sync/<branch>, clean up"
+        exit 1
+        ;;
+esac

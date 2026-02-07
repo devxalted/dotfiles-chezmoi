@@ -84,6 +84,7 @@ brew "jq"
 brew "yq"
 brew "tlrc"
 brew "chezmoi"
+brew "neofetch"
 BREWEOF
 brew bundle --file="$BREWFILE"
 rm -f "$BREWFILE"
@@ -147,7 +148,8 @@ sudo pacman -S --needed --noconfirm \
     chezmoi \
     base-devel \
     ttf-jetbrains-mono-nerd \
-    keyd
+    keyd \
+    neofetch
 
 # AUR helper (install paru if missing)
 if command -v paru &> /dev/null; then
