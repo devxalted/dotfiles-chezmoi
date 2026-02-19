@@ -5,11 +5,8 @@
 buf=$(cat "$@")
 encoded=$(echo -n "$buf" | base64 | tr -d '\n')
 
-# Get the tmux client TTY
-if [ -n "$TMUX" ]; then
-    tty=$(tmux display-message -p '#{client_tty}')
-    # Use tmux's passthrough to send to outer terminal
-    printf '\ePtmux;\e\e]52;c;%s\a\e\\' "$encoded" > "$tty"
-else
-    printf '\033]52;c;%s\007' "$encoded" > /dev/tty
-fi
+# Only works inside tmux (mosh + tmux remote clipboard)
+[ -z "$TMUX" ] && exit 0
+
+tty=$(tmux display-message -p '#{client_tty}')
+printf '\ePtmux;\e\e]52;c;%s\a\e\\' "$encoded" > "$tty"

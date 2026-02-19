@@ -7,7 +7,10 @@ alias find='fd'
 alias du='dust'
 alias df='duf'
 alias ps='procs'
-alias cd='z'
+# Only alias cd to zoxide if it's been initialized (avoids errors in non-interactive shells)
+if (( $+functions[__zoxide_z] )); then
+  alias cd='z'
+fi
 alias cy='claude --dangerously-skip-permissions'
 {{- if eq .chezmoi.os "linux" }}
 alias grep='rg'
@@ -86,6 +89,11 @@ alias cma='chezmoi apply'
 alias cmu='chezmoi update'
 alias cme='chezmoi edit'
 alias cmcd='chezmoi cd'
+
+# AutoForge (bind to 0.0.0.0 for Tailscale access)
+{{- if eq .chezmoi.hostname "archie-goodwynn" }}
+alias autoforge="autoforge --host 0.0.0.0"
+{{- end }}
 
 # Archie TUI
 {{- if eq .chezmoi.hostname "archie-goodwynn" }}
