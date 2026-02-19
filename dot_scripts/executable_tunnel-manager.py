@@ -864,9 +864,9 @@ def select_certificate_interactive(manager: TunnelManager) -> bool:
     """Interactive certificate selection. Returns True if cert was selected."""
     if manager.cert_file:
         return True  # Already have a cert
-    
+
     cert_files = list((Path.home() / ".cloudflared").glob("*-cert.pem"))
-    
+
     if not cert_files:
         print(f"{Colors.RED}No certificate files found in ~/.cloudflared/{Colors.ENDC}")
         print(f"Please run: {Colors.CYAN}cloudflared tunnel login{Colors.ENDC}")
