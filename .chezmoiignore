@@ -5,6 +5,7 @@
 {{- if eq .chezmoi.os "darwin" }}
 .config/hypr/
 .config/dunst/
+.config/niri/
 {{- end }}
 
 # Ignore macOS-specific configs on Linux
