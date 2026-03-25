@@ -1,0 +1,54 @@
+theme = "evergreen"
+
+[editor]
+line-number = "relative"
+cursorline = true
+auto-pairs = true
+scrolloff = 8
+text-width = 144
+
+[editor.statusline]
+left = ["mode", "file-name", "spinner"]
+center = ["version-control"]
+right = ["diagnostics", "selections", "position", "file-type"]
+separator = "│"
+
+[editor.statusline.mode]
+normal = "NOR"
+insert = "INS"
+select = "SEL"
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.indent-guides]
+render = true
+
+[editor.soft-wrap]
+enable = true
+wrap-at-text-width = true
+
+[editor.file-picker]
+hidden = false
+
+[keys.normal]
+G = "goto_last_line"
+"A-z" = ":toggle gutters.line-numbers.min-width 150 3"
+tab = ":bn"
+S-tab = ":bp"
+C-h = "jump_view_left"
+C-j = "jump_view_down"
+C-k = "jump_view_up"
+C-l = "jump_view_right"
+C-a = "goto_line_start"
+C-e = "goto_line_end"
+
+[keys.insert]
+C-a = "goto_line_start"
+C-e = "goto_line_end"
+
+[keys.normal.space]
+space = "file_picker"
+"D" = ":yank-diagnostic"

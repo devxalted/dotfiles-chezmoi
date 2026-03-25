@@ -1,0 +1,4 @@
+[opener]
+helix = [
+  { run = 'helix "$@"', block = true, desc = "Open with Helix" },
+]

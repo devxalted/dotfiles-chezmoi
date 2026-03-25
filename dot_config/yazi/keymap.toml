@@ -1,0 +1,29 @@
+[[mgr.prepend_keymap]]
+on = "e"
+run = "shell --block -- helix %h"
+desc = "Open with Helix"
+
+[[mgr.prepend_keymap]]
+on = "E"
+run = "shell --block -- helix ."
+desc = "Open CWD in Helix"
+
+[[mgr.prepend_keymap]]
+on = "<Enter>"
+run = "enter"
+desc = "Enter directory"
+
+[[mgr.prepend_keymap]]
+on = "<Backspace>"
+run = "leave"
+desc = "Leave directory"
+
+[[mgr.prepend_keymap]]
+on = "h"
+run = "noop"
+desc = "Disabled"
+
+[[mgr.prepend_keymap]]
+on = "l"
+run = "noop"
+desc = "Disabled"
