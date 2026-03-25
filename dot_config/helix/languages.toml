@@ -1,0 +1,32 @@
+[language-server.lsp-ai]
+command = "lsp-ai"
+
+[language-server.lsp-ai.config.models.qwen14b]
+type = "ollama"
+model = "qwen2.5-coder:14b"
+ollama_endpoint = "http://macbook:11434"
+
+[language-server.lsp-ai.config.completion]
+model = "qwen14b"
+parameters = { max_tokens = 128, max_context = 2048, temperature = 0.1 }
+
+[language-server.lsp-ai.config.completion.post_process]
+remove_duplicate_start = true
+remove_duplicate_end = true
+
+[[language]]
+name = "go"
+language-servers = ["gopls", "lsp-ai"]
+
+[[language]]
+name = "typescript"
+language-servers = ["typescript-language-server", "lsp-ai"]
+
+[[language]]
+name = "python"
+language-servers = ["ty", "lsp-ai"]
+# language-servers = ["ty"]
+
+[[language]]
+name = "markdown"
+language-servers = ["lsp-ai"]
