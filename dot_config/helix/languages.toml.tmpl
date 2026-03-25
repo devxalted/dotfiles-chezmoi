@@ -4,7 +4,11 @@ command = "lsp-ai"
 [language-server.lsp-ai.config.models.qwen14b]
 type = "ollama"
 model = "qwen2.5-coder:14b"
+{{- if eq .chezmoi.os "darwin" }}
+ollama_endpoint = "http://localhost:11434"
+{{- else }}
 ollama_endpoint = "http://macbook:11434"
+{{- end }}
 
 [language-server.lsp-ai.config.completion]
 model = "qwen14b"

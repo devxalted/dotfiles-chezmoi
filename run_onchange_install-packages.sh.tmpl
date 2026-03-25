@@ -85,6 +85,8 @@ brew "yq"
 brew "tlrc"
 brew "chezmoi"
 brew "neofetch"
+brew "helix"
+brew "yazi"
 BREWEOF
 brew bundle --file="$BREWFILE"
 rm -f "$BREWFILE"
@@ -149,6 +151,8 @@ sudo pacman -S --needed --noconfirm \
     base-devel \
     ttf-jetbrains-mono-nerd \
     keyd \
+    helix \
+    yazi \
     neofetch
 
 # AUR helper (install paru if missing)
