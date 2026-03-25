@@ -1,0 +1,88 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="file:~/.config/zellij/plugins/zjstatus.wasm" {
+                // Color aliases
+                color_green   "#3D6B44"
+                color_deep    "#014421"
+                color_mustard "#C4A000"
+                color_amber   "#D4A017"
+                color_sienna  "#A0522D"
+                color_clay    "#8B7355"
+                color_sage    "#4A7C59"
+                color_text    "#909090"
+                color_dim     "#555555"
+                color_muted   "#6A6A6A"
+
+                // Layout
+                format_left   "{mode} #[fg=#555555]{session} {command_git}"
+                format_center "{datetime}"
+                format_right  "{command_load} {command_ram} {command_uptime} {command_host}"
+                format_space  ""
+
+                border_enabled "false"
+
+                // Git branch
+                command_git_command     "/usr/bin/cat /tmp/zellij-git-branch"
+                command_git_format     "#[fg=#C4A000,bold] {stdout}"
+                command_git_interval   "30"
+                command_git_rendermode "static"
+
+                // CPU usage
+                command_cpu_command    "/usr/bin/bash /home/admin/.config/zellij/scripts/cpu.sh"
+                command_cpu_format    "#[fg=#555555] {stdout}"
+                command_cpu_interval  "5"
+                command_cpu_rendermode "static"
+
+                // RAM usage
+                command_ram_command    "/usr/bin/bash /home/admin/.config/zellij/scripts/ram.sh"
+                command_ram_format    "#[fg=#555555] 󰍛 {stdout}"
+                command_ram_interval  "5"
+                command_ram_rendermode "static"
+
+                // Load average
+                command_load_command    "/usr/bin/bash /home/admin/.config/zellij/scripts/load.sh"
+                command_load_format    "#[fg=#555555] 󰔏 {stdout}"
+                command_load_interval  "5"
+                command_load_rendermode "static"
+
+                // Uptime
+                command_uptime_command    "/usr/bin/bash -c 'uptime -p | sed s/up //'"
+                command_uptime_format    "#[fg=#555555] 󰅐 {stdout}"
+                command_uptime_interval  "60"
+                command_uptime_rendermode "static"
+
+                // Hostname
+                command_host_command    "/usr/bin/cat /proc/sys/kernel/hostname"
+                command_host_format    "#[fg=#555555] 󰒋 {stdout}"
+                command_host_interval  "0"
+                command_host_rendermode "static"
+
+                // Mode indicators
+                mode_normal   "#[fg=#3D6B44,bold] UNLOCKED "
+                mode_locked   "#[fg=#A0522D,bold] LOCKED "
+                mode_resize   "#[fg=#D4A017,bold] RESIZE "
+                mode_pane     "#[fg=#4A7C59,bold] PANE "
+                mode_tab      "#[fg=#C4A000,bold] TAB "
+                mode_scroll   "#[fg=#8B7355,bold] SCROLL "
+                mode_search   "#[fg=#C4A000,bold] SEARCH "
+                mode_tmux     "#[fg=#D4A017,bold] TMUX "
+                mode_session  "#[fg=#4A7C59,bold] SESSION "
+                mode_move     "#[fg=#8B7355,bold] MOVE "
+
+                // Tabs
+                tab_normal    "#[fg=#555555] {name} "
+                tab_active    "#[fg=#3D6B44,bold] {name} "
+
+                // Datetime
+                datetime          "#[fg=#9A7E0A,bold] {format} "
+                datetime_format   "%a %b %d  %H:%M"
+                datetime_timezone "America/Chicago"
+            }
+        }
+        children
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+}
