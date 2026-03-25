@@ -69,9 +69,29 @@ alias backup-status='systemctl status backup-sync.service'
 alias backup-logs='tail -f ~/.local/share/lsyncd/lsyncd.log'
 alias backup-check='ls -lth /mnt/backup/arch-backup/dev/ | head -10'
 alias backup-size='du -sh /mnt/backup/arch-backup/*'
+
+# Auto-update monitoring
+alias update-log='bat /var/log/auto-update.log'
+alias update-status='systemctl status auto-update.timer auto-update.service'
 {{- end }}
 
-# Tmux aliases
+{{- if ne .chezmoi.os "linux" }}
+# Wake dev PC remotely via Mac Mini WOL relay
+alias wake-dev='ssh archie wake-arch'
+{{- end }}
+
+# Zellij aliases
+alias zj='zellij'
+alias za='zellij attach'
+alias zan='zellij attach -c'
+alias zl='zellij list-sessions'
+alias zn='zellij -s'
+alias zk='zellij kill-session'
+alias zka='zellij kill-all-sessions'
+alias zda='zellij delete-all-sessions'
+alias zd='zellij action detach'
+
+# Tmux aliases (legacy)
 alias t='tmux'
 alias ta='tmux attach'
 alias tan='tmux a -t'
@@ -101,3 +121,18 @@ alias archie="openclaw tui --url ws://100.123.23.104:18789"
 {{- else }}
 alias archie="ssh -t archie 'zsh -ic \"openclaw tui --url ws://100.123.23.104:18789\"'"
 {{- end }}
+
+# Yazi
+alias ya="yazi"
+
+# Helix
+alias hx="helix"
+
+# Just
+alias jg="just -g"
+
+# Quick GitHub repo from current directory
+ginit() {
+  local name="${1:-$(basename "$PWD")}"
+  git init && gh repo create "$name" --private --source=. --remote=origin --push
+}

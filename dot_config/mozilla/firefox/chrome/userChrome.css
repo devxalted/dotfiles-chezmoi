@@ -1,0 +1,174 @@
+/* Evergreen Firefox — minimal UI for Tridactyl workflow
+ * Matches Wezterm/Zellij/Hyprland Evergreen theme */
+
+/* ── Color variables ── */
+:root {
+  --ev-bg: #000000;
+  --ev-bg-alt: #121212;
+  --ev-fg: #909090;
+  --ev-dim: #555555;
+  --ev-muted: #3a3a3a;
+  --ev-green: #3D6B44;
+  --ev-deep: #014421;
+  --ev-sage: #4A7C59;
+  --ev-mustard: #9A7E0A;
+  --ev-sienna: #A0522D;
+  --ev-selection: #2A4A2E;
+}
+
+/* ── Hide tab bar entirely (using Tridactyl) ── */
+#TabsToolbar {
+  visibility: collapse !important;
+}
+
+/* ── Hide title bar buttons (close/min/max) ── */
+.titlebar-buttonbox-container {
+  display: none !important;
+}
+
+/* ── Minimal navbar ── */
+#nav-bar {
+  background: var(--ev-bg) !important;
+  border: none !important;
+  padding: 2px 8px !important;
+  min-height: 32px !important;
+}
+
+/* ── URL bar ── */
+#urlbar-background {
+  background: var(--ev-bg-alt) !important;
+  border: 1px solid var(--ev-muted) !important;
+  border-radius: 4px !important;
+}
+
+#urlbar:hover #urlbar-background {
+  border-color: var(--ev-dim) !important;
+}
+
+#urlbar[focused="true"] #urlbar-background {
+  border-color: var(--ev-green) !important;
+}
+
+#urlbar-input {
+  color: var(--ev-fg) !important;
+  font-family: 'JetBrainsMono Nerd Font', monospace !important;
+  font-size: 12px !important;
+}
+
+/* URL bar placeholder */
+#urlbar-input::placeholder {
+  color: var(--ev-dim) !important;
+}
+
+/* ── Hide unnecessary navbar elements ── */
+#star-button-box,
+#tracking-protection-icon-container,
+#page-action-buttons,
+#reader-mode-button,
+#identity-icon-box,
+#pocket-button-box,
+#pageActionButton,
+#urlbar-zoom-button,
+#translations-button {
+  display: none !important;
+}
+
+/* ── Bookmarks bar — hide unless hovered ── */
+#PersonalToolbar {
+  visibility: collapse !important;
+}
+
+/* ── Sidebar ── */
+#sidebar-header {
+  background: var(--ev-bg) !important;
+  border-bottom: 1px solid var(--ev-muted) !important;
+}
+
+/* ── Navigation buttons (back/forward) ── */
+#back-button,
+#forward-button {
+  display: none !important;
+}
+
+/* ── Hide various toolbar buttons ── */
+#alltabs-button,
+#new-tab-button,
+#tabs-newtab-button,
+#firefox-view-button,
+#unified-extensions-button {
+  display: none !important;
+}
+
+/* ── Findbar ── */
+.findbar-container {
+  background: var(--ev-bg) !important;
+  color: var(--ev-fg) !important;
+}
+
+.findbar-textbox {
+  background: var(--ev-bg-alt) !important;
+  color: var(--ev-fg) !important;
+  border: 1px solid var(--ev-muted) !important;
+  font-family: 'JetBrainsMono Nerd Font', monospace !important;
+}
+
+.findbar-textbox[status="notfound"] {
+  border-color: var(--ev-sienna) !important;
+}
+
+/* ── Autocomplete popup ── */
+.urlbarView {
+  background: var(--ev-bg) !important;
+}
+
+.urlbarView-row {
+  color: var(--ev-fg) !important;
+}
+
+.urlbarView-row[selected] {
+  background: var(--ev-selection) !important;
+}
+
+.urlbarView-row:hover {
+  background: var(--ev-bg-alt) !important;
+}
+
+/* ── Context menus ── */
+menupopup {
+  --panel-background: var(--ev-bg-alt) !important;
+  --panel-color: var(--ev-fg) !important;
+  --panel-border-color: var(--ev-muted) !important;
+}
+
+menuitem[_moz-menuactive="true"],
+menu[_moz-menuactive="true"] {
+  background-color: var(--ev-selection) !important;
+  color: var(--ev-fg) !important;
+}
+
+/* ── Auto-hide navbar (show on hover at top edge) ── */
+#navigator-toolbox {
+  --uc-navbar-transform: -40px;
+  background: var(--ev-bg) !important;
+}
+
+#navigator-toolbox:not(:focus-within):not(:hover) {
+  margin-top: var(--uc-navbar-transform);
+  opacity: 0;
+  transition: margin-top 0.2s ease, opacity 0.15s ease;
+  z-index: 1;
+  position: relative;
+}
+
+#navigator-toolbox:focus-within,
+#navigator-toolbox:hover {
+  margin-top: 0;
+  opacity: 1;
+  transition: margin-top 0.2s ease, opacity 0.15s ease;
+}
+
+/* Prevent content jump when navbar shows */
+#navigator-toolbox {
+  position: relative;
+  z-index: 1;
+}

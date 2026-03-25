@@ -9,4 +9,4 @@ encoded=$(echo -n "$buf" | base64 | tr -d '\n')
 [ -z "$TMUX" ] && exit 0
 
 tty=$(tmux display-message -p '#{client_tty}')
-printf '\ePtmux;\e\e]52;c;%s\a\e\\' "$encoded" > "$tty"
+printf '\e]52;c;%s\a' "$encoded" > "$tty"

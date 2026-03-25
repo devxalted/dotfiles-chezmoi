@@ -1,0 +1,43 @@
+#!/bin/bash
+# Deploy Firefox userChrome.css and user.js into the active profile.
+# Triggered by chezmoi when the source files change.
+#
+# hash: {{ include "dot_config/mozilla/firefox/chrome/userChrome.css" | sha256sum }}
+# hash: {{ include "dot_config/mozilla/firefox/user.js" | sha256sum }}
+
+set -e
+
+{{ if eq .chezmoi.os "darwin" -}}
+FIREFOX_DIR="$HOME/Library/Application Support/Firefox/Profiles"
+{{ else -}}
+FIREFOX_DIR="$HOME/.config/mozilla/firefox"
+if [ ! -d "$FIREFOX_DIR" ]; then
+    FIREFOX_DIR="$HOME/.mozilla/firefox"
+fi
+{{ end -}}
+
+if [ ! -d "$FIREFOX_DIR" ]; then
+    echo "No Firefox profile directory found, skipping"
+    exit 0
+fi
+
+# Find the default-release profile (or any profile if that doesn't exist)
+PROFILE=$(find "$FIREFOX_DIR" -maxdepth 1 -type d -name "*.default-release" | head -1)
+if [ -z "$PROFILE" ]; then
+    PROFILE=$(find "$FIREFOX_DIR" -maxdepth 1 -type d -name "*.default" | head -1)
+fi
+
+if [ -z "$PROFILE" ]; then
+    echo "No Firefox profile found, skipping"
+    exit 0
+fi
+
+echo "Deploying Firefox config to: $PROFILE"
+
+mkdir -p "$PROFILE/chrome"
+cp "$HOME/.config/mozilla/firefox/chrome/userChrome.css" "$PROFILE/chrome/userChrome.css" 2>/dev/null || \
+    cp "{{ .chezmoi.sourceDir }}/dot_config/mozilla/firefox/chrome/userChrome.css" "$PROFILE/chrome/userChrome.css"
+cp "$HOME/.config/mozilla/firefox/user.js" "$PROFILE/user.js" 2>/dev/null || \
+    cp "{{ .chezmoi.sourceDir }}/dot_config/mozilla/firefox/user.js" "$PROFILE/user.js"
+
+echo "Firefox config deployed successfully"

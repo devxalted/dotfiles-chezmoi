@@ -1,5 +1,49 @@
 # Useful functions
 
+# thefuck - correct previous command
+eval $(thefuck --alias)
+
+# eza helpers with optional tree depth: ls -2, ll -3, la -2, etc.
+unalias ls ll la 2>/dev/null
+ls() {
+  local depth=0 args=()
+  for arg in "$@"; do
+    if [[ "$arg" =~ ^-([0-9]+)$ ]]; then depth=${match[1]}
+    else args+=("$arg"); fi
+  done
+  if (( depth > 0 )); then
+    eza --icons -1 --group-directories-first --tree --level="$depth" "${args[@]}"
+  else
+    eza --icons -1 --group-directories-first "${args[@]}"
+  fi
+}
+
+ll() {
+  local depth=0 args=()
+  for arg in "$@"; do
+    if [[ "$arg" =~ ^-([0-9]+)$ ]]; then depth=${match[1]}
+    else args+=("$arg"); fi
+  done
+  if (( depth > 0 )); then
+    eza -l --icons --group-directories-first --tree --level="$depth" "${args[@]}"
+  else
+    eza -l --icons --group-directories-first "${args[@]}"
+  fi
+}
+
+la() {
+  local depth=0 args=()
+  for arg in "$@"; do
+    if [[ "$arg" =~ ^-([0-9]+)$ ]]; then depth=${match[1]}
+    else args+=("$arg"); fi
+  done
+  if (( depth > 0 )); then
+    eza -la --icons --group-directories-first --tree --level="$depth" "${args[@]}"
+  else
+    eza -la --icons --group-directories-first "${args[@]}"
+  fi
+}
+
 # Create directory and cd into it
 mkcd() {
   mkdir -p "$1" && cd "$1"
@@ -27,6 +71,7 @@ gz() {
 
 # extract() provided by OMZ extract plugin via zinit
 
+
 # Quick find in files
 fif() {
   if [ -z "$1" ]; then
@@ -50,3 +95,284 @@ backup() {
 ducks() {
   dust -d 1 -r
 }
+
+# Open a project in Yazi (uses zoxide to resolve name)
+yd() {
+  local dir=$(zoxide query "$@" 2>/dev/null)
+  if [ -n "$dir" ]; then
+    yazi "$dir"
+  else
+    echo "No match for: $@"
+  fi
+}
+
+# Open a path in Helix (uses zoxide to resolve name)
+# With no args or on tab, opens fzf picker over zoxide database
+hz() {
+  local dir
+  if [ $# -eq 0 ]; then
+    dir=$(zoxide query -i 2>/dev/null)
+  else
+    dir=$(zoxide query "$@" 2>/dev/null)
+  fi
+  if [ -n "$dir" ]; then
+    hx "$dir"
+  else
+    echo "No match for: $@"
+  fi
+}
+
+# FZF tab interceptor for specific commands
+# Intercepts tab when the current command matches hx or hz
+_fzf_tab_intercept() {
+  # $<tab> anywhere: pick from global secrets, replace $ with value
+  if [[ "$LBUFFER" == *'$' ]]; then
+    local tokfile="$HOME/.config/secrets/tokens.env"
+    if [[ -f "$tokfile" ]]; then
+      local selected
+      selected=$(grep -v '^\s*#' "$tokfile" | grep -v '^\s*$' | fzf --height 40% --layout=reverse --border --delimiter='=' --nth=1 --preview="echo {1}")
+      if [ -n "$selected" ]; then
+        local val="${selected#*=}"
+        val="${val%\"}" ; val="${val#\"}"
+        val="${val%\'}" ; val="${val#\'}"
+        # Remove the trailing $ and insert the value
+        LBUFFER="${LBUFFER%\$}${val}"
+        zle reset-prompt
+      fi
+    fi
+    return
+  fi
+
+  local cmd rest
+  if [[ "$LBUFFER" == *" "* ]]; then
+    cmd="${LBUFFER%% *}"
+    rest="${LBUFFER#* }"
+  else
+    cmd="$LBUFFER"
+    rest=""
+  fi
+
+  # Split rest into prefix args (flags like +30, -n, --foo) and trailing query
+  local prefix="" query=""
+  if [ -n "$rest" ]; then
+    local words=(${(z)rest})
+    local i=1
+    while (( i <= ${#words} )); do
+      if [[ "${words[$i]}" == -* || "${words[$i]}" == +* ]]; then
+        prefix+="${words[$i]} "
+        (( i++ ))
+      else
+        break
+      fi
+    done
+    query="${words[$i,-1]}"
+  fi
+
+  case "$cmd" in
+    hx)
+      local selected
+      selected=$(fd --type f --hidden --exclude .git --exclude node_modules --exclude .cache --exclude .local --exclude .rustup --exclude .cargo --exclude go --exclude .npm 2>/dev/null | fzf --height 40% --layout=reverse --border --query="$query")
+      if [ -n "$selected" ]; then
+        LBUFFER="hx ${prefix}${(q)selected}"
+        RBUFFER=""
+        zle reset-prompt
+      fi
+      ;;
+    hz)
+      local selected
+      selected=$(zoxide query -l 2>/dev/null | fzf --height 40% --layout=reverse --border --query="$query")
+      if [ -n "$selected" ]; then
+        LBUFFER="hz ${prefix}${(q)selected}"
+        RBUFFER=""
+        zle reset-prompt
+      fi
+      ;;
+    z)
+      local selected
+      selected=$(zoxide query -l 2>/dev/null | fzf --height 40% --layout=reverse --border --query="$query")
+      if [ -n "$selected" ]; then
+        LBUFFER="cd ${prefix}${(q)selected}"
+        RBUFFER=""
+        zle reset-prompt
+      fi
+      ;;
+    cat|bat)
+      local selected
+      selected=$(fd --type f --hidden --exclude .git --exclude node_modules --exclude .cache --exclude .local --exclude .rustup --exclude .cargo --exclude go --exclude .npm 2>/dev/null | fzf --height 40% --layout=reverse --border --preview="bat --color=always --line-range :50 {}" --query="$query")
+      if [ -n "$selected" ]; then
+        LBUFFER="$cmd ${prefix}${(q)selected}"
+        RBUFFER=""
+        zle reset-prompt
+      fi
+      ;;
+    kill)
+      local selected
+      selected=$(ps aux | fzf --height 40% --layout=reverse --border --header="PID USER CPU MEM COMMAND" --query="$query" | awk '{print $2}')
+      if [ -n "$selected" ]; then
+        LBUFFER="kill ${prefix}${selected}"
+        RBUFFER=""
+        zle reset-prompt
+      fi
+      ;;
+    ssh)
+      local selected
+      selected=$(awk '/^Host / && !/\*/ {print $2}' ~/.ssh/config 2>/dev/null | fzf --height 40% --layout=reverse --border --query="$query")
+      if [ -n "$selected" ]; then
+        LBUFFER="ssh ${prefix}${selected}"
+        RBUFFER=""
+        zle reset-prompt
+      fi
+      ;;
+    gco)
+      local selected
+      selected=$(git branch --all --format='%(refname:short)' 2>/dev/null | fzf --height 40% --layout=reverse --border --query="$query")
+      if [ -n "$selected" ]; then
+        # Strip origin/ prefix for remote branches
+        selected="${selected#origin/}"
+        LBUFFER="gco ${prefix}${selected}"
+        RBUFFER=""
+        zle reset-prompt
+      fi
+      ;;
+    xh|xhs)
+      # Find first .env file in cwd or parent dirs
+      local envfile="" dir="$PWD"
+      while [[ "$dir" != "/" ]]; do
+        if [[ -f "$dir/.env" ]]; then
+          envfile="$dir/.env"
+          break
+        fi
+        dir="${dir:h}"
+      done
+      if [[ -z "$envfile" ]]; then
+        zle expand-or-complete
+        return
+      fi
+      # Show KEY=VALUE lines, pick one, insert the value at cursor
+      local selected
+      selected=$(grep -v '^\s*#' "$envfile" | grep -v '^\s*$' | fzf --height 40% --layout=reverse --border --query="$query" --preview="echo {}" --delimiter='=' --nth=1)
+      if [ -n "$selected" ]; then
+        local val="${selected#*=}"
+        # Strip surrounding quotes if present
+        val="${val%\"}"
+        val="${val#\"}"
+        val="${val%\'}"
+        val="${val#\'}"
+        LBUFFER="${LBUFFER}${val}"
+        zle reset-prompt
+      fi
+      ;;
+    systemctl)
+      local selected
+      selected=$(systemctl list-units --all --no-legend --no-pager 2>/dev/null | awk '{print $1}' | fzf --height 40% --layout=reverse --border --query="$query" --preview="systemctl status --no-pager {}")
+      if [ -n "$selected" ]; then
+        LBUFFER="systemctl ${prefix}${selected}"
+        RBUFFER=""
+        zle reset-prompt
+      fi
+      ;;
+    envload)
+      # Find .env* files in cwd or pick from common locations
+      local selected
+      selected=$(fd --type f --hidden --no-ignore --max-depth 3 '\.env' . 2>/dev/null | fzf --height 40% --layout=reverse --border --query="$query" --preview="bat --color=always {}")
+      if [ -n "$selected" ]; then
+        LBUFFER="envload ${(q)selected}"
+        RBUFFER=""
+        zle reset-prompt
+      fi
+      ;;
+    *)
+      # Default: run normal tab completion
+      zle expand-or-complete
+      ;;
+  esac
+}
+
+# Track env vars loaded by envload
+typeset -gA _ENVLOAD_VARS=()
+_ENVLOAD_SOURCE=""
+
+# Source a .env file into the current shell
+envload() {
+  local target=""
+  case "$1" in
+    -staging)    target=".env.staging" ;;
+    -production) target=".env.production" ;;
+    -*)          echo "Unknown flag: $1"; return 1 ;;
+    "")
+      # Default: .env.local first, then .env
+      if [ -f ".env.local" ]; then
+        target=".env.local"
+      else
+        target=".env"
+      fi
+      ;;
+    *)           target="$1" ;;
+  esac
+  if [ ! -f "$target" ]; then
+    echo "File not found: $target"
+    return 1
+  fi
+  set -- "$target"
+  # Unset any previously loaded vars not in the new file
+  if (( ${#_ENVLOAD_VARS} > 0 )); then
+    for key in "${(@k)_ENVLOAD_VARS}"; do
+      unset "$key"
+    done
+    _ENVLOAD_VARS=()
+  fi
+  local count=0
+  _ENVLOAD_SOURCE="$1"
+  while IFS= read -r line; do
+    # Skip comments and blank lines
+    [[ "$line" =~ ^\s*# ]] && continue
+    [[ -z "${line// }" ]] && continue
+    # Strip surrounding quotes from value
+    local key="${line%%=*}"
+    local val="${line#*=}"
+    val="${val%\"}" ; val="${val#\"}"
+    val="${val%\'}" ; val="${val#\'}"
+    export "$key=$val"
+    _ENVLOAD_VARS[$key]="$val"
+    (( count++ ))
+  done < "$1"
+  echo "Loaded $count vars from $1"
+}
+
+# Show currently loaded env vars
+envshow() {
+  if (( ${#_ENVLOAD_VARS} == 0 )); then
+    echo "No env vars loaded via envload"
+    return
+  fi
+  echo "Source: $_ENVLOAD_SOURCE"
+  echo "---"
+  for key val in "${(@kv)_ENVLOAD_VARS}"; do
+    # Mask values, show first 4 chars only
+    local masked="${val:0:4}****"
+    echo "$key=$masked"
+  done
+}
+
+# Unload all vars loaded by envload
+envunload() {
+  if (( ${#_ENVLOAD_VARS} == 0 )); then
+    echo "No env vars to unload"
+    return
+  fi
+  local count=0
+  for key in "${(@k)_ENVLOAD_VARS}"; do
+    unset "$key"
+    (( count++ ))
+  done
+  echo "Unloaded $count vars from $_ENVLOAD_SOURCE"
+  _ENVLOAD_VARS=()
+  _ENVLOAD_SOURCE=""
+}
+zle -N _fzf_tab_intercept
+
+# Force tab binding on every prompt line, so turbo-loaded plugins can't steal it
+_ensure_fzf_tab_binding() {
+  bindkey '^I' _fzf_tab_intercept
+}
+zle -N zle-line-init _ensure_fzf_tab_binding

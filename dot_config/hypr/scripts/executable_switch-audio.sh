@@ -59,8 +59,13 @@ case "$1" in
         wpctl set-default "$SINK_ID"
         send_notification "🖥️" "HDMI Display Audio"
         ;;
+    "speakers")
+        SINK_ID=$(find_sink "Starship/Matisse")
+        wpctl set-default "$SINK_ID"
+        send_notification "🔊" "Speakers (Analog Surround 5.1)"
+        ;;
     *)
-        echo "Usage: $0 {astro|airpods|hdmi}"
+        echo "Usage: $0 {astro|airpods|hdmi|speakers}"
         exit 1
         ;;
 esac

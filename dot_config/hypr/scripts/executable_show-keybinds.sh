@@ -119,12 +119,13 @@ HEADER
 
     echo "📸 SCREENSHOTS"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    grep "^bind.*Print" "$CONFIG" | \
+    grep "^bind.*grim" "$CONFIG" | \
         sed 's/$mainMod/Super/g' | \
         sed 's/bind[el]*\s*=\s*//' | \
-        sed 's/, exec, grim - | wl-copy/ → Full screen to clipboard/' | \
-        sed 's/, exec, grim -g "$(slurp)" - | wl-copy/ → Selection to clipboard/' | \
+        sed 's/, exec, grim - | wl-copy --type image\/png/ → Full screen to clipboard/' | \
+        sed 's/, exec, grim -g "$(slurp)" - | wl-copy --type image\/png/ → Selection to clipboard/' | \
         sed 's/, exec, grim -g "$(slurp)" ~\/Pictures\/$(date +%Y%m%d_%H%M%S).png/ → Selection to file/' | \
+        sed 's/, exec, ~\/.config\/hypr\/scripts\/claude-screenshot.sh/ → Claude screenshot/' | \
         awk -F'→' '{printf "  %-25s %s\n", $1, $2}'
     echo ""
 

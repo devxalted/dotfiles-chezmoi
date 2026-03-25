@@ -1,0 +1,285 @@
+// Niri config - ported from Hyprland
+// https://yalter.github.io/niri/Configuration:-Introduction
+
+input {
+    keyboard {
+        xkb {
+            layout "us"
+        }
+        numlock
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+    }
+
+    mouse {
+        accel-profile "flat"
+    }
+
+    focus-follows-mouse max-scroll-amount="0%"
+}
+
+// Monitor config
+output "HDMI-A-1" {
+    mode "3840x2160@120"
+    scale 1
+    position x=0 y=0
+}
+
+// Layout
+layout {
+    gaps 16
+
+    center-focused-column "on-overflow"
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+
+    default-column-width { proportion 0.5; }
+
+    focus-ring {
+        width 2
+        active-gradient from="#d65d0e" to="#fe8019" angle=45
+        inactive-color "#3c3836"
+    }
+
+    border {
+        off
+    }
+
+    shadow {
+        on
+        softness 16
+        spread 2
+        offset x=0 y=3
+        color "#1a1a1aee"
+    }
+}
+
+// Prefer server-side decorations
+prefer-no-csd
+
+// Screenshots
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+// Animations
+animations {
+    // Keep defaults, niri has nice animations out of the box
+}
+
+// Startup programs
+spawn-at-startup "waybar"
+spawn-at-startup "swaybg" "-m" "fill" "-i" "/home/admin/Downloads/wall.png"
+spawn-at-startup "dunst"
+spawn-at-startup "swayosd-server"
+
+// Hotkey overlay
+hotkey-overlay {
+    skip-at-startup
+}
+
+// Environment variables
+environment {
+    XCURSOR_SIZE "24"
+    GTK_THEME "Adwaita-dark"
+    DISPLAY null
+}
+
+// Window rules
+
+// WezTerm initial size fix
+window-rule {
+    match app-id="org.wezfurlong.wezterm"
+    default-column-width {}
+}
+
+// Firefox PiP floating
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+// Float utility programs
+window-rule {
+    match app-id="pavucontrol"
+    match app-id="blueman-manager"
+    match app-id="nm-connection-editor"
+    open-floating true
+}
+
+// Float common dialogs
+window-rule {
+    match title="^Open File$"
+    match title="^Save File$"
+    match title="^Volume Control$"
+    open-floating true
+}
+
+// Spotify to workspace 8
+window-rule {
+    match app-id="spotify"
+    open-on-workspace "8"
+}
+
+// Discord to workspace 9
+window-rule {
+    match app-id="discord"
+    open-on-workspace "9"
+}
+
+// Steam to workspace 10
+window-rule {
+    match app-id="steam"
+    open-on-workspace "10"
+}
+
+// Round corners on all windows
+window-rule {
+    geometry-corner-radius 8
+    clip-to-geometry true
+}
+
+// Slightly dim inactive windows (like Hyprland's inactive opacity 0.95)
+window-rule {
+    match is-active=false
+    opacity 0.95
+}
+
+binds {
+    // ── Application Launchers ──
+    Mod+T { spawn "wezterm"; }
+    Mod+Space { spawn "wezterm"; }
+    Mod+Shift+B { spawn "firefox"; }
+    Mod+B { spawn "firefox"; }
+    Mod+E { spawn "dolphin"; }
+    Mod+Return { spawn "hyprlauncher"; }
+
+    // ── Window Management ──
+    Mod+Q { close-window; }
+    Mod+F { maximize-column; }
+    Mod+Shift+F { fullscreen-window; }
+    Mod+Escape { toggle-window-floating; }
+    Mod+Shift+Escape { spawn "hyprlock"; }
+
+    // ── Focus (vim keys + arrows) ──
+    Mod+H { focus-column-left; }
+    Mod+L { focus-column-right; }
+    Mod+K { focus-window-up; }
+    Mod+J { focus-window-down; }
+    Mod+Left { focus-column-left; }
+    Mod+Right { focus-column-right; }
+    Mod+Up { focus-window-up; }
+    Mod+Down { focus-window-down; }
+
+    // ── Move Windows (Shift + vim keys) ──
+    Mod+Shift+H { move-column-left; }
+    Mod+Shift+L { move-column-right; }
+    Mod+Shift+K { move-window-up; }
+    Mod+Shift+J { move-window-down; }
+
+    // ── Resize (Ctrl + vim keys) ──
+    Mod+Ctrl+H { set-column-width "-5%"; }
+    Mod+Ctrl+L { set-column-width "+5%"; }
+    Mod+Ctrl+K { set-window-height "-5%"; }
+    Mod+Ctrl+J { set-window-height "+5%"; }
+
+    // ── Column management (niri-specific) ──
+    Mod+BracketLeft { consume-or-expel-window-left; }
+    Mod+BracketRight { consume-or-expel-window-right; }
+    Mod+R { switch-preset-column-width; }
+    Mod+C { center-column; }
+    Mod+W { toggle-column-tabbed-display; }
+    Mod+V { toggle-window-floating; }
+
+    // ── Workspaces ──
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+    Mod+0 { focus-workspace 10; }
+
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+    Mod+Shift+6 { move-column-to-workspace 6; }
+    Mod+Shift+7 { move-column-to-workspace 7; }
+    Mod+Shift+8 { move-column-to-workspace 8; }
+    Mod+Shift+9 { move-column-to-workspace 9; }
+    Mod+Shift+0 { move-column-to-workspace 10; }
+
+    // Scroll through workspaces
+    Mod+WheelScrollDown cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollUp cooldown-ms=150 { focus-workspace-up; }
+    Mod+Page_Down { focus-workspace-down; }
+    Mod+Page_Up { focus-workspace-up; }
+
+    // ── Overview ──
+    Mod+O { toggle-overview; }
+    Mod+Tab { focus-workspace-previous; }
+
+    // ── Screenshots ──
+    // niri has built-in screenshot support
+    Print { screenshot; }
+    Ctrl+Print { screenshot-screen; }
+    Alt+Print { screenshot-window; }
+    // Selection screenshot to clipboard (matches Hyprland Shift+Alt+S)
+    Shift+Alt+S { screenshot; }
+
+    // ── Volume & Media (same as Hyprland) ──
+    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "swayosd-client --output-volume raise"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "swayosd-client --output-volume lower"; }
+    XF86AudioMute allow-when-locked=true { spawn-sh "swayosd-client --output-volume mute-toggle"; }
+    XF86AudioMicMute allow-when-locked=true { spawn-sh "swayosd-client --input-volume mute-toggle"; }
+
+    // Brightness (Super + volume keys)
+    Mod+XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "swayosd-client --brightness raise"; }
+    Mod+XF86AudioLowerVolume allow-when-locked=true { spawn-sh "swayosd-client --brightness lower"; }
+
+    // Media controls
+    XF86AudioPlay allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+    XF86AudioPause allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+    XF86AudioNext allow-when-locked=true { spawn-sh "playerctl next"; }
+    XF86AudioPrev allow-when-locked=true { spawn-sh "playerctl previous"; }
+
+    // Spotify-specific (Shift modifier)
+    Shift+XF86AudioPlay allow-when-locked=true { spawn-sh "playerctl -p spotify play-pause"; }
+    Shift+XF86AudioPause allow-when-locked=true { spawn-sh "playerctl -p spotify play-pause"; }
+    Shift+XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "playerctl -p spotify volume 0.05+"; }
+    Shift+XF86AudioLowerVolume allow-when-locked=true { spawn-sh "playerctl -p spotify volume 0.05-"; }
+
+    // Firefox-specific (Ctrl+Shift modifier)
+    Ctrl+Shift+XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "playerctl -p firefox volume 0.05+"; }
+    Ctrl+Shift+XF86AudioLowerVolume allow-when-locked=true { spawn-sh "playerctl -p firefox volume 0.05-"; }
+
+    // ── Spotify Like/Unlike ──
+    Mod+KP_Add { spawn-sh "~/.config/hypr/scripts/spotify-like.py"; }
+    Mod+Equal { spawn-sh "~/.config/hypr/scripts/spotify-like.py"; }
+    Mod+Shift+Equal { spawn-sh "~/.config/hypr/scripts/spotify-like.py --playlist"; }
+    Mod+Minus { spawn-sh "~/.config/hypr/scripts/spotify-like.py --unlike"; }
+    Mod+KP_Subtract { spawn-sh "~/.config/hypr/scripts/spotify-like.py --unlike"; }
+    Mod+Shift+S { spawn-sh "~/.config/hypr/scripts/spotify-like.py --copy-link"; }
+    Mod+I { spawn-sh "~/.config/hypr/scripts/spotify-like.py --now-playing"; }
+
+    // ── Audio Output Switching ──
+    Mod+F1 { spawn-sh "~/.config/hypr/scripts/switch-audio.sh astro"; }
+    Mod+F2 { spawn-sh "~/.config/hypr/scripts/switch-audio.sh airpods"; }
+    Mod+F3 { spawn-sh "~/.config/hypr/scripts/switch-audio.sh hdmi"; }
+    Mod+F4 { spawn-sh "~/.config/hypr/scripts/switch-audio.sh speakers"; }
+
+    // ── Session ──
+    Mod+Shift+Q { quit; }
+    Mod+Shift+Slash { show-hotkey-overlay; }
+    Mod+Shift+P { power-off-monitors; }
+}
