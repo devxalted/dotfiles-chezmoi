@@ -126,7 +126,9 @@ alias archie="ssh -t archie 'zsh -ic \"openclaw tui --url ws://100.123.23.104:18
 alias ya="yazi"
 
 # Helix
+{{ if ne .chezmoi.os "darwin" -}}
 alias hx="helix"
+{{ end -}}
 
 # Just
 alias jg="just -g"

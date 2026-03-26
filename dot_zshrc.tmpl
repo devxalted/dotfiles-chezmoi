@@ -23,6 +23,17 @@ source "${ZINIT_HOME}/zinit.zsh"
 # Zinit Plugins
 # ========================================
 
+{{- if eq .chezmoi.os "darwin" }}
+# macOS: turbo-load heavy per-keystroke plugins for faster shell init
+# Load order: completions (sync) -> autosuggestions -> history-substring -> syntax-highlighting (last)
+zinit light zsh-users/zsh-completions
+zinit ice wait lucid atload'_zsh_autosuggest_start'
+zinit light zsh-users/zsh-autosuggestions
+zinit ice wait"0a" lucid
+zinit light zsh-users/zsh-history-substring-search
+zinit ice wait"0b" lucid
+zinit light zdharma-continuum/fast-syntax-highlighting
+{{- else }}
 # Load important plugins first (no turbo mode)
 zinit light zsh-users/zsh-autosuggestions
 zinit light zdharma-continuum/fast-syntax-highlighting
@@ -31,6 +42,7 @@ zinit light zsh-users/zsh-completions
 # Load plugins with turbo mode for faster startup
 zinit ice wait lucid
 zinit light zsh-users/zsh-history-substring-search
+{{- end }}
 
 # NOTE: zsh-autocomplete disabled - causes conflicts with tmux
 # zinit ice wait lucid

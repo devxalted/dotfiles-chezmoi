@@ -6,8 +6,12 @@ format = """
 [╭─](bold green)$username$hostname$directory$git_branch$git_status$git_state$nodejs$rust$python$golang$java$c$cmd_duration
 [╰─](bold green)$character"""
 
-# Timeout for starship to execute commands
+{{ if eq .chezmoi.os "darwin" -}}
+# macOS: lower timeout — APFS git ops are slower than ext4
+command_timeout = 300
+{{ else -}}
 command_timeout = 1000
+{{ end -}}
 
 # Add a blank line between prompts
 add_newline = true
@@ -71,6 +75,26 @@ deleted = "✘${count}"
 format = '[\($state( $progress_current of $progress_total)\)]($style) '
 style = "bright-black"
 
+{{ if eq .chezmoi.os "darwin" -}}
+# macOS: disable language version detection to reduce per-prompt overhead
+[nodejs]
+disabled = true
+
+[rust]
+disabled = true
+
+[python]
+disabled = true
+
+[golang]
+disabled = true
+
+[java]
+disabled = true
+
+[c]
+disabled = true
+{{ else -}}
 [nodejs]
 symbol = " "
 format = "via [$symbol($version )]($style)"
@@ -105,6 +129,7 @@ style = "bold red"
 symbol = " "
 format = "via [$symbol($version )]($style)"
 style = "bold blue"
+{{ end -}}
 
 [cmd_duration]
 min_time = 500

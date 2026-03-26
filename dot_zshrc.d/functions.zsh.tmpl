@@ -1,7 +1,16 @@
 # Useful functions
 
+{{ if eq .chezmoi.os "darwin" -}}
+# thefuck - lazy load to avoid slow Python eval on every shell init
+fuck() {
+  unfunction fuck
+  eval $(thefuck --alias)
+  fuck "$@"
+}
+{{ else -}}
 # thefuck - correct previous command
 eval $(thefuck --alias)
+{{ end -}}
 
 # eza helpers with optional tree depth: ls -2, ll -3, la -2, etc.
 unalias ls ll la 2>/dev/null
@@ -370,9 +379,13 @@ envunload() {
   _ENVLOAD_SOURCE=""
 }
 zle -N _fzf_tab_intercept
-
+{{ if eq .chezmoi.os "darwin" -}}
+# macOS: bind tab once after zinit loads (avoid per-prompt rebinding overhead)
+bindkey '^I' _fzf_tab_intercept
+{{ else -}}
 # Force tab binding on every prompt line, so turbo-loaded plugins can't steal it
 _ensure_fzf_tab_binding() {
   bindkey '^I' _fzf_tab_intercept
 }
 zle -N zle-line-init _ensure_fzf_tab_binding
+{{ end -}}

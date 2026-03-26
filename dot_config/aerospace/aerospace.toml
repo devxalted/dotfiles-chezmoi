@@ -1,0 +1,169 @@
+config-version = 2
+start-at-login = true
+
+# Tiles layout (closest to Hyprland dwindle)
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+# Normalization (like Hyprland's preserve_split + force_split)
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+accordion-padding = 30
+
+# Mouse follows focus across monitors
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# Gaps (matching Hyprland: gaps_in = 5, gaps_out = 20)
+[gaps]
+    inner.horizontal = 5
+    inner.vertical = 5
+    outer.left = 20
+    outer.right = 20
+    outer.top = 20
+    outer.bottom = 20
+
+# Ensure Homebrew binaries are available in exec commands
+[exec]
+    inherit-env-vars = true
+[exec.env-vars]
+    PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
+
+# ==========================================
+# Monitor -> Workspace assignments
+# ==========================================
+# Main (MacBook) = workspaces 1-9
+# iPad (Sidecar/secondary) = workspace 10
+
+[workspace-to-monitor-force-assignment]
+    10 = 'secondary'
+
+# ==========================================
+# Keybindings
+# ==========================================
+# Physical Left Option = Meh (ctrl+cmd+alt) via Karabiner = "Super"
+# All bindings use ctrl-alt-cmd as the Super modifier
+
+[mode.main.binding]
+
+    # -- App launchers --
+    ctrl-alt-cmd-space = ['workspace 1', 'exec-and-forget open -a WezTerm']
+    ctrl-alt-cmd-t = 'exec-and-forget open -na WezTerm'
+    ctrl-alt-cmd-b = 'exec-and-forget open -a Firefox'
+    ctrl-alt-cmd-d = 'exec-and-forget open -a Discord'
+    ctrl-alt-cmd-s = 'exec-and-forget open -a Spotify'
+    ctrl-alt-cmd-m = 'exec-and-forget open -a Messages'
+
+    # -- Window management --
+    ctrl-alt-cmd-q = 'close'
+    ctrl-alt-cmd-f = 'fullscreen'
+    ctrl-alt-cmd-shift-f = 'macos-native-fullscreen'
+    ctrl-alt-cmd-esc = 'layout floating tiling'
+    ctrl-alt-cmd-backslash = 'layout tiles horizontal vertical'
+    ctrl-alt-cmd-tab = 'workspace-back-and-forth'
+
+    # -- Focus (vim keys) --
+    ctrl-alt-cmd-h = 'focus left'
+    ctrl-alt-cmd-j = 'focus down'
+    ctrl-alt-cmd-k = 'focus up'
+    ctrl-alt-cmd-l = 'focus right'
+
+    # -- Focus (arrow keys) --
+    ctrl-alt-cmd-left = 'focus left'
+    ctrl-alt-cmd-down = 'focus down'
+    ctrl-alt-cmd-up = 'focus up'
+    ctrl-alt-cmd-right = 'focus right'
+
+    # -- Move windows (vim keys) --
+    ctrl-alt-cmd-shift-h = 'move left'
+    ctrl-alt-cmd-shift-j = 'move down'
+    ctrl-alt-cmd-shift-k = 'move up'
+    ctrl-alt-cmd-shift-l = 'move right'
+
+    # -- Workspaces --
+    ctrl-alt-cmd-1 = 'workspace 1'
+    ctrl-alt-cmd-2 = 'workspace 2'
+    ctrl-alt-cmd-3 = 'workspace 3'
+    ctrl-alt-cmd-4 = 'workspace 4'
+    ctrl-alt-cmd-5 = 'workspace 5'
+    ctrl-alt-cmd-6 = 'workspace 6'
+    ctrl-alt-cmd-7 = 'workspace 7'
+    ctrl-alt-cmd-8 = 'workspace 8'
+    ctrl-alt-cmd-9 = 'workspace 9'
+    ctrl-alt-cmd-0 = 'workspace 10'
+
+    # -- Move window to workspace --
+    ctrl-alt-cmd-shift-1 = 'move-node-to-workspace 1'
+    ctrl-alt-cmd-shift-2 = 'move-node-to-workspace 2'
+    ctrl-alt-cmd-shift-3 = 'move-node-to-workspace 3'
+    ctrl-alt-cmd-shift-4 = 'move-node-to-workspace 4'
+    ctrl-alt-cmd-shift-5 = 'move-node-to-workspace 5'
+    ctrl-alt-cmd-shift-6 = 'move-node-to-workspace 6'
+    ctrl-alt-cmd-shift-7 = 'move-node-to-workspace 7'
+    ctrl-alt-cmd-shift-8 = 'move-node-to-workspace 8'
+    ctrl-alt-cmd-shift-9 = 'move-node-to-workspace 9'
+    ctrl-alt-cmd-shift-0 = 'move-node-to-workspace 10'
+
+    # -- Resize mode --
+    ctrl-alt-cmd-r = 'mode resize'
+
+    # -- Balance window sizes --
+    ctrl-alt-cmd-equal = 'balance-sizes'
+
+    # -- Audio output (via Shortcuts for AirPlay support) --
+    ctrl-alt-cmd-f1 = 'exec-and-forget shortcuts run "Audio AirPods"'
+    ctrl-alt-cmd-f2 = 'exec-and-forget shortcuts run "Audio Office"'
+    ctrl-alt-cmd-f3 = 'exec-and-forget shortcuts run "Audio All"'
+
+    # -- Reload config --
+    ctrl-alt-cmd-shift-r = 'reload-config'
+
+# Resize mode (Super+R to enter, Esc to exit)
+[mode.resize.binding]
+    h = 'resize width -30'
+    l = 'resize width +30'
+    k = 'resize height -30'
+    j = 'resize height +30'
+    minus = 'resize smart -50'
+    equal = 'resize smart +50'
+    enter = 'mode main'
+    esc = 'mode main'
+
+# ==========================================
+# Window rules
+# ==========================================
+
+# Spotify -> workspace 8
+[[on-window-detected]]
+    if.app-id = 'com.spotify.client'
+    run = 'move-node-to-workspace 8'
+
+# Discord -> workspace 9
+[[on-window-detected]]
+    if.app-id = 'com.hnc.Discord'
+    run = 'move-node-to-workspace 9'
+
+# Safari -> workspace 10 (iPad)
+[[on-window-detected]]
+    if.app-id = 'com.apple.Safari'
+    run = 'move-node-to-workspace 10'
+
+# Float system preferences
+[[on-window-detected]]
+    if.app-id = 'com.apple.systempreferences'
+    run = 'layout floating'
+
+# Float 1Password
+[[on-window-detected]]
+    if.app-id = 'com.1password.1password'
+    run = 'layout floating'
+
+# Float Raycast
+[[on-window-detected]]
+    if.app-name-regex-substring = 'raycast'
+    run = 'layout floating'
+
+# Float picture-in-picture
+[[on-window-detected]]
+    if.window-title-regex-substring = 'picture.in.picture'
+    run = 'layout floating'

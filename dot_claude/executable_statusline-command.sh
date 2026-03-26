@@ -6,19 +6,11 @@ input=$(cat)
 # Extract data from JSON
 current_dir=$(echo "$input" | jq -r '.workspace.current_dir')
 model_name=$(echo "$input" | jq -r '.model.display_name')
-context_used=$(echo "$input" | jq -r '.context.used // 0')
-context_total=$(echo "$input" | jq -r '.context.total // 0')
+context_pct=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
+context_info="${context_pct}%"
 
 # Get machine name
 hostname=$(hostname -s)
-
-# Calculate context percentage
-if [ "$context_total" -gt 0 ]; then
-    context_pct=$((context_used * 100 / context_total))
-    context_info="${context_pct}%"
-else
-    context_info="--"
-fi
 
 # Get current time
 time=$(date +%H:%M:%S)
