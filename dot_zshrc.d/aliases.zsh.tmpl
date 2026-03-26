@@ -77,7 +77,7 @@ alias update-status='systemctl status auto-update.timer auto-update.service'
 
 {{- if ne .chezmoi.os "linux" }}
 # Wake dev PC remotely via Mac Mini WOL relay
-alias wake-dev='ssh archie wake-arch'
+alias wake-arch='ssh archie wake-linux'
 {{- end }}
 
 # Zellij aliases
@@ -112,7 +112,7 @@ alias cmcd='chezmoi cd'
 
 # AutoForge (bind to 0.0.0.0 for Tailscale access)
 {{- if eq .chezmoi.hostname "archie-goodwynn" }}
-alias autoforge="autoforge --host 0.0.0.0"
+alias autoforge="tailscale serve --bg 8888 >/dev/null 2>&1; autoforge --host 0.0.0.0"
 {{- end }}
 
 # Archie TUI

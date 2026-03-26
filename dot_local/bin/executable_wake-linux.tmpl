@@ -1,0 +1,21 @@
+{{- if eq .chezmoi.hostname "archie-goodwynn" -}}
+#!/bin/bash
+# Wake the Linux PC via Wake-on-LAN
+MAC="7c:10:c9:3c:0b:10"
+BROADCAST="192.168.1.255"
+
+echo "Sending WOL magic packet to Linux PC ($MAC)..."
+wakeonlan -i "$BROADCAST" "$MAC"
+
+# Wait and check if it comes up
+echo "Waiting for it to wake..."
+for i in $(seq 1 30); do
+    if ping -c 1 -W 1 192.168.1.100 &>/dev/null; then
+        echo "Linux PC is awake! (took ~${i}s)"
+        exit 0
+    fi
+    sleep 1
+done
+echo "Timed out after 30s - machine may still be waking or WOL may have failed."
+exit 1
+{{- end -}}
