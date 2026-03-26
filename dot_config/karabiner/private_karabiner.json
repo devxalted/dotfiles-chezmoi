@@ -84,6 +84,234 @@
                         ]
                     },
                     {
+                        "description": "Non-terminal: Ctrl+C/V/X/K -> Cmd+C/V/X/K",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$"],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "c",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "c",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$"],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "v",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "v",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$"],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "x",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "x",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$"],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "k",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "k",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Firefox: Ctrl+T/L/W -> Cmd+T/L/W",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": ["^org\\.mozilla\\.firefox$"],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "t",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "t",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": ["^org\\.mozilla\\.firefox$"],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "l",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "l",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": ["^org\\.mozilla\\.firefox$"],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "w",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "w",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Shift+Play: Spotify play/pause",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "play_or_pause",
+                                    "modifiers": { "mandatory": ["shift"] }
+                                },
+                                "to": [
+                                    {
+                                        "shell_command": "osascript -e 'tell application \"Spotify\" to playpause'"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Shift+Next: Spotify next track",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "fastforward",
+                                    "modifiers": { "mandatory": ["shift"] }
+                                },
+                                "to": [
+                                    {
+                                        "shell_command": "osascript -e 'tell application \"Spotify\" to next track'"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Shift+Prev: Spotify previous track",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "rewind",
+                                    "modifiers": { "mandatory": ["shift"] }
+                                },
+                                "to": [
+                                    {
+                                        "shell_command": "osascript -e 'tell application \"Spotify\" to previous track'"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Shift+VolumeUp: Spotify volume up",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "volume_increment",
+                                    "modifiers": { "mandatory": ["shift"] }
+                                },
+                                "to": [
+                                    {
+                                        "shell_command": "osascript -e 'tell application \"Spotify\" to set sound volume to (sound volume + 5)'"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Shift+VolumeDown: Spotify volume down",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "volume_decrement",
+                                    "modifiers": { "mandatory": ["shift"] }
+                                },
+                                "to": [
+                                    {
+                                        "shell_command": "osascript -e 'tell application \"Spotify\" to set sound volume to (sound volume - 5)'"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
                         "description": "Left Shift: hold Shift, tap (, double-tap [",
                         "manipulators": [
                             {
@@ -100,9 +328,8 @@
                                 },
                                 "to": [{ "key_code": "left_shift" }],
                                 "to_if_alone": [
-                                    {
-                                        "key_code": "open_bracket"
-                                    },
+                                    { "key_code": "delete_or_backspace" },
+                                    { "key_code": "open_bracket" },
                                     {
                                         "set_variable": {
                                             "name": "left_shift_tapped",
@@ -123,6 +350,10 @@
                                 "to": [{ "key_code": "left_shift" }],
                                 "to_if_alone": [
                                     {
+                                        "key_code": "9",
+                                        "modifiers": ["left_shift"]
+                                    },
+                                    {
                                         "set_variable": {
                                             "name": "left_shift_tapped",
                                             "value": 1
@@ -131,10 +362,6 @@
                                 ],
                                 "to_delayed_action": {
                                     "to_if_invoked": [
-                                        {
-                                            "key_code": "9",
-                                            "modifiers": ["left_shift"]
-                                        },
                                         {
                                             "set_variable": {
                                                 "name": "left_shift_tapped",
@@ -172,9 +399,8 @@
                                 },
                                 "to": [{ "key_code": "right_shift" }],
                                 "to_if_alone": [
-                                    {
-                                        "key_code": "close_bracket"
-                                    },
+                                    { "key_code": "delete_or_backspace" },
+                                    { "key_code": "close_bracket" },
                                     {
                                         "set_variable": {
                                             "name": "right_shift_tapped",
@@ -195,6 +421,10 @@
                                 "to": [{ "key_code": "right_shift" }],
                                 "to_if_alone": [
                                     {
+                                        "key_code": "0",
+                                        "modifiers": ["left_shift"]
+                                    },
+                                    {
                                         "set_variable": {
                                             "name": "right_shift_tapped",
                                             "value": 1
@@ -203,10 +433,6 @@
                                 ],
                                 "to_delayed_action": {
                                     "to_if_invoked": [
-                                        {
-                                            "key_code": "0",
-                                            "modifiers": ["left_shift"]
-                                        },
                                         {
                                             "set_variable": {
                                                 "name": "right_shift_tapped",

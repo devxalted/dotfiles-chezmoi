@@ -115,6 +115,11 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
     ctrl-alt-cmd-f2 = 'exec-and-forget shortcuts run "Audio Office"'
     ctrl-alt-cmd-f3 = 'exec-and-forget shortcuts run "Audio All"'
 
+    # -- Spotify (Super + key) --
+    ctrl-alt-cmd-i = 'exec-and-forget ~/.scripts/spotify-like.py --now-playing'
+    ctrl-alt-cmd-shift-equal = 'exec-and-forget ~/.scripts/spotify-like.py --playlist'
+    ctrl-alt-cmd-minus = 'exec-and-forget ~/.scripts/spotify-like.py --unlike'
+
     # -- Reload config --
     ctrl-alt-cmd-shift-r = 'reload-config'
 
