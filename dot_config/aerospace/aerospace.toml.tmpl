@@ -32,10 +32,16 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 # ==========================================
 # Monitor -> Workspace assignments
 # ==========================================
-# Main (MacBook) = workspaces 1-9
-# iPad (Sidecar/secondary) = workspace 10
+# Main (MacBook) = workspaces 1-4
+# iPad (Sidecar/secondary) = workspaces 5-10
+# When sidecar is disconnected, 5-10 fall back to main monitor
 
 [workspace-to-monitor-force-assignment]
+    5 = 'secondary'
+    6 = 'secondary'
+    7 = 'secondary'
+    8 = 'secondary'
+    9 = 'secondary'
     10 = 'secondary'
 
 # ==========================================
@@ -48,8 +54,16 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
     # -- App launchers --
     ctrl-alt-cmd-space = ['workspace 1', 'exec-and-forget open -a WezTerm']
+    ctrl-alt-cmd-comma = 'workspace 5'
+    ctrl-alt-cmd-period = ['workspace 6', 'exec-and-forget open -a Claude']
     ctrl-alt-cmd-t = 'exec-and-forget open -na WezTerm'
+    ctrl-alt-cmd-enter = 'exec-and-forget ~/.local/bin/firefox-main.sh'
+{{ if eq .chezmoi.hostname "macbook" }}
+    # Docs browser (separate Firefox profile on iPad/workspace 10)
+    ctrl-alt-cmd-b = 'exec-and-forget ~/.local/bin/firefox-docs.sh'
+{{ else }}
     ctrl-alt-cmd-b = 'exec-and-forget open -a Firefox'
+{{ end }}
     ctrl-alt-cmd-d = 'exec-and-forget open -a Discord'
     ctrl-alt-cmd-s = 'exec-and-forget open -a Spotify'
     ctrl-alt-cmd-m = 'exec-and-forget open -a Messages'
@@ -138,20 +152,30 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 # Window rules
 # ==========================================
 
-# Spotify -> workspace 8
+# Claude Desktop -> workspace 6 (fullscreen)
+[[on-window-detected]]
+    if.app-id = 'com.anthropic.claudefordesktop'
+    run = ['move-node-to-workspace 6', 'fullscreen on']
+
+# Spotify -> workspace 7 (fullscreen)
 [[on-window-detected]]
     if.app-id = 'com.spotify.client'
-    run = 'move-node-to-workspace 8'
+    run = ['move-node-to-workspace 7', 'fullscreen on']
 
-# Discord -> workspace 9
+# Messages -> workspace 8 (fullscreen)
+[[on-window-detected]]
+    if.app-id = 'com.apple.MobileSMS'
+    run = ['move-node-to-workspace 8', 'fullscreen on']
+
+# Discord -> workspace 9 (fullscreen)
 [[on-window-detected]]
     if.app-id = 'com.hnc.Discord'
-    run = 'move-node-to-workspace 9'
+    run = ['move-node-to-workspace 9', 'fullscreen on']
 
-# Safari -> workspace 10 (iPad)
+# Firefox (all instances) -> fullscreen
 [[on-window-detected]]
-    if.app-id = 'com.apple.Safari'
-    run = 'move-node-to-workspace 10'
+    if.app-id = 'org.mozilla.firefox'
+    run = 'fullscreen on'
 
 # Float system preferences
 [[on-window-detected]]

@@ -22,6 +22,19 @@
                         ]
                     },
                     {
+                        "description": "Escape to F18 (SuperWhisper trigger)",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "escape",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "key_code": "f18" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
                         "description": "Left Control to Left Command",
                         "manipulators": [
                             {
@@ -84,12 +97,14 @@
                         ]
                     },
                     {
-                        "description": "Non-terminal: Ctrl+C/V/X/K -> Cmd+C/V/X/K",
+                        "description": "Non-terminal: Ctrl -> Cmd for common shortcuts",
                         "manipulators": [
                             {
                                 "conditions": [
                                     {
-                                        "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$"],
+                                        "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$"
+                                        ],
                                         "type": "frontmost_application_unless"
                                     }
                                 ],
@@ -108,7 +123,9 @@
                             {
                                 "conditions": [
                                     {
-                                        "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$"],
+                                        "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$"
+                                        ],
                                         "type": "frontmost_application_unless"
                                     }
                                 ],
@@ -127,7 +144,9 @@
                             {
                                 "conditions": [
                                     {
-                                        "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$"],
+                                        "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$"
+                                        ],
                                         "type": "frontmost_application_unless"
                                     }
                                 ],
@@ -146,7 +165,9 @@
                             {
                                 "conditions": [
                                     {
-                                        "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$"],
+                                        "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$"
+                                        ],
                                         "type": "frontmost_application_unless"
                                     }
                                 ],
@@ -161,17 +182,161 @@
                                     }
                                 ],
                                 "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "Firefox: Ctrl+T/L/W -> Cmd+T/L/W",
-                        "manipulators": [
+                            },
                             {
                                 "conditions": [
                                     {
-                                        "bundle_identifiers": ["^org\\.mozilla\\.firefox$"],
-                                        "type": "frontmost_application_if"
+                                        "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "a",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "a",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "f",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "f",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "z",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "z",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "z",
+                                    "modifiers": { "mandatory": ["control", "shift"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "z",
+                                        "modifiers": ["left_command", "shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "s",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "s",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "q",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "q",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "w",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "w",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$"
+                                        ],
+                                        "type": "frontmost_application_unless"
                                     }
                                 ],
                                 "from": {
@@ -189,8 +354,10 @@
                             {
                                 "conditions": [
                                     {
-                                        "bundle_identifiers": ["^org\\.mozilla\\.firefox$"],
-                                        "type": "frontmost_application_if"
+                                        "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$"
+                                        ],
+                                        "type": "frontmost_application_unless"
                                     }
                                 ],
                                 "from": {
@@ -208,17 +375,19 @@
                             {
                                 "conditions": [
                                     {
-                                        "bundle_identifiers": ["^org\\.mozilla\\.firefox$"],
-                                        "type": "frontmost_application_if"
+                                        "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm$"
+                                        ],
+                                        "type": "frontmost_application_unless"
                                     }
                                 ],
                                 "from": {
-                                    "key_code": "w",
+                                    "key_code": "r",
                                     "modifiers": { "mandatory": ["control"] }
                                 },
                                 "to": [
                                     {
-                                        "key_code": "w",
+                                        "key_code": "r",
                                         "modifiers": ["left_command"]
                                     }
                                 ],
@@ -234,11 +403,7 @@
                                     "key_code": "play_or_pause",
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
-                                "to": [
-                                    {
-                                        "shell_command": "osascript -e 'tell application \"Spotify\" to playpause'"
-                                    }
-                                ],
+                                "to": [{ "shell_command": "osascript -e 'tell application \"Spotify\" to playpause'" }],
                                 "type": "basic"
                             }
                         ]
@@ -251,11 +416,7 @@
                                     "key_code": "fastforward",
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
-                                "to": [
-                                    {
-                                        "shell_command": "osascript -e 'tell application \"Spotify\" to next track'"
-                                    }
-                                ],
+                                "to": [{ "shell_command": "osascript -e 'tell application \"Spotify\" to next track'" }],
                                 "type": "basic"
                             }
                         ]
@@ -268,11 +429,7 @@
                                     "key_code": "rewind",
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
-                                "to": [
-                                    {
-                                        "shell_command": "osascript -e 'tell application \"Spotify\" to previous track'"
-                                    }
-                                ],
+                                "to": [{ "shell_command": "osascript -e 'tell application \"Spotify\" to previous track'" }],
                                 "type": "basic"
                             }
                         ]
@@ -285,11 +442,7 @@
                                     "key_code": "volume_increment",
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
-                                "to": [
-                                    {
-                                        "shell_command": "osascript -e 'tell application \"Spotify\" to set sound volume to (sound volume + 5)'"
-                                    }
-                                ],
+                                "to": [{ "shell_command": "osascript -e 'tell application \"Spotify\" to set sound volume to (sound volume + 5)'" }],
                                 "type": "basic"
                             }
                         ]
@@ -302,9 +455,70 @@
                                     "key_code": "volume_decrement",
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
-                                "to": [
+                                "to": [{ "shell_command": "osascript -e 'tell application \"Spotify\" to set sound volume to (sound volume - 5)'" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Home: tap Home, double-tap End",
+                        "manipulators": [
+                            {
+                                "conditions": [
                                     {
-                                        "shell_command": "osascript -e 'tell application \"Spotify\" to set sound volume to (sound volume - 5)'"
+                                        "name": "home_tapped",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "home",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    { "key_code": "delete_or_backspace" },
+                                    { "key_code": "end" },
+                                    {
+                                        "set_variable": {
+                                            "name": "home_tapped",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "home",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "parameters": { "basic.to_delayed_action_delay_milliseconds": 175 },
+                                "to": [{ "key_code": "home" }],
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "set_variable": {
+                                                "name": "home_tapped",
+                                                "value": 0
+                                            }
+                                        }
+                                    ],
+                                    "to_if_invoked": [
+                                        {
+                                            "set_variable": {
+                                                "name": "home_tapped",
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                },
+                                "to_if_alone": [
+                                    { "key_code": "home" },
+                                    {
+                                        "set_variable": {
+                                            "name": "home_tapped",
+                                            "value": 1
+                                        }
                                     }
                                 ],
                                 "type": "basic"
@@ -344,10 +558,26 @@
                                     "key_code": "left_shift",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 175
-                                },
+                                "parameters": { "basic.to_if_alone_timeout_milliseconds": 175 },
                                 "to": [{ "key_code": "left_shift" }],
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "set_variable": {
+                                                "name": "left_shift_tapped",
+                                                "value": 0
+                                            }
+                                        }
+                                    ],
+                                    "to_if_invoked": [
+                                        {
+                                            "set_variable": {
+                                                "name": "left_shift_tapped",
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                },
                                 "to_if_alone": [
                                     {
                                         "key_code": "9",
@@ -360,24 +590,6 @@
                                         }
                                     }
                                 ],
-                                "to_delayed_action": {
-                                    "to_if_invoked": [
-                                        {
-                                            "set_variable": {
-                                                "name": "left_shift_tapped",
-                                                "value": 0
-                                            }
-                                        }
-                                    ],
-                                    "to_if_canceled": [
-                                        {
-                                            "set_variable": {
-                                                "name": "left_shift_tapped",
-                                                "value": 0
-                                            }
-                                        }
-                                    ]
-                                },
                                 "type": "basic"
                             }
                         ]
@@ -415,10 +627,26 @@
                                     "key_code": "right_shift",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 175
-                                },
+                                "parameters": { "basic.to_if_alone_timeout_milliseconds": 175 },
                                 "to": [{ "key_code": "right_shift" }],
+                                "to_delayed_action": {
+                                    "to_if_canceled": [
+                                        {
+                                            "set_variable": {
+                                                "name": "right_shift_tapped",
+                                                "value": 0
+                                            }
+                                        }
+                                    ],
+                                    "to_if_invoked": [
+                                        {
+                                            "set_variable": {
+                                                "name": "right_shift_tapped",
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                },
                                 "to_if_alone": [
                                     {
                                         "key_code": "0",
@@ -431,30 +659,23 @@
                                         }
                                     }
                                 ],
-                                "to_delayed_action": {
-                                    "to_if_invoked": [
-                                        {
-                                            "set_variable": {
-                                                "name": "right_shift_tapped",
-                                                "value": 0
-                                            }
-                                        }
-                                    ],
-                                    "to_if_canceled": [
-                                        {
-                                            "set_variable": {
-                                                "name": "right_shift_tapped",
-                                                "value": 0
-                                            }
-                                        }
-                                    ]
-                                },
                                 "type": "basic"
                             }
                         ]
                     }
                 ]
             },
+            "devices": [
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": true,
+                        "product_id": 12292,
+                        "vendor_id": 14000
+                    },
+                    "ignore": false
+                }
+            ],
             "name": "Linux-like",
             "selected": true,
             "virtual_hid_keyboard": {

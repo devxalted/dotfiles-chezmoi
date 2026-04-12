@@ -327,6 +327,7 @@ plugins {
 // eg. "file:/path/to/my-plugin.wasm"
 // eg. "https://example.com/my-plugin.wasm"
 load_plugins {
+    "file:~/.config/zellij/plugins/zjstatus.wasm"
 }
 web_client {
     font "monospace"
@@ -424,8 +425,12 @@ scroll_buffer_size 50000
 // copy_command "xclip -selection clipboard" // x11
 // copy_command "wl-copy"                    // wayland
 // copy_command "pbcopy"                     // osx
-// 
+//
+{{ if eq .chezmoi.os "darwin" -}}
+copy_command "pbcopy"
+{{- else -}}
 copy_command "wl-copy"
+{{- end }}
  
 // Choose the destination for copied text
 // Allows using the primary selection buffer (on x11/wayland) instead of the system clipboard.
@@ -443,7 +448,11 @@ copy_command "wl-copy"
  
 // Path to the default editor to use to edit pane scrollbuffer
 // Default: $EDITOR or $VISUAL
+{{ if eq .chezmoi.os "darwin" -}}
+scrollback_editor "{{ lookPath "hx" }}"
+{{- else -}}
 scrollback_editor "/usr/bin/helix"
+{{- end }}
  
 // A fixed name to always give the Zellij session.
 // Consider also setting `attach_to_session true,`

@@ -2,6 +2,55 @@ local wezterm = require 'wezterm'
 
 local config = wezterm.config_builder()
 
+-- Zen mode: center terminal content within a target column width
+local zen_columns = 170
+
+local function compute_zen_padding(window, pane)
+    local pane_dims = pane:get_dimensions()
+    if pane_dims.cols == 0 or pane_dims.pixel_width == 0 then return nil end
+    local cell_width = pane_dims.pixel_width / pane_dims.cols
+    local win_width = window:get_dimensions().pixel_width
+    local target_px = math.floor(zen_columns * cell_width)
+    if win_width <= target_px then return nil end
+    return math.floor((win_width - target_px) / 2)
+end
+
+local function set_zen_padding(window, pane)
+    local pad = compute_zen_padding(window, pane)
+    local overrides = window:get_config_overrides() or {}
+    if pad then
+        local cur = overrides.window_padding
+        if cur and cur.left == pad then return end
+        overrides.window_padding = { left = pad, right = pad, top = 20, bottom = 20 }
+    else
+        if not overrides.window_padding then return end
+        overrides.window_padding = nil
+    end
+    window:set_config_overrides(overrides)
+end
+
+local function clear_zen_padding(window)
+    local overrides = window:get_config_overrides() or {}
+    if not overrides.window_padding then return end
+    overrides.window_padding = nil
+    window:set_config_overrides(overrides)
+end
+
+wezterm.on('window-resized', function(window, pane)
+    if wezterm.GLOBAL.zen_mode == false then return end
+    set_zen_padding(window, pane)
+end)
+
+wezterm.on('toggle-zen', function(window, pane)
+    if wezterm.GLOBAL.zen_mode == false then
+        wezterm.GLOBAL.zen_mode = true
+        set_zen_padding(window, pane)
+    else
+        wezterm.GLOBAL.zen_mode = false
+        clear_zen_padding(window)
+    end
+end)
+
 -- Font
 config.font = wezterm.font_with_fallback {
     { family = 'JetBrainsMono Nerd Font', weight = 'Medium' },
@@ -91,6 +140,7 @@ config.enable_wayland = true
 
 -- Keys
 config.keys = {
+    { key = 'z', mods = 'CTRL|SHIFT', action = wezterm.action.EmitEvent 'toggle-zen' },
     { key = 'v', mods = 'CTRL', action = wezterm.action.PasteFrom 'Clipboard' },
     { key = 'v', mods = 'CTRL|SHIFT', action = wezterm.action.SendKey { key = 'v', mods = 'CTRL' } },
 {{- if eq .chezmoi.os "darwin" }}

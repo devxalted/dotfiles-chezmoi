@@ -1,3 +1,8 @@
+{{- $bash := "/usr/bin/bash" -}}
+{{- $scripts := .chezmoi.homeDir | printf "%s/.config/zellij/scripts" -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $bash = "/bin/bash" -}}
+{{- end }}
 layout {
     default_tab_template {
         pane size=1 borderless=true {
@@ -23,37 +28,37 @@ layout {
                 border_enabled "false"
 
                 // Git branch
-                command_git_command     "/usr/bin/cat /tmp/zellij-git-branch"
+                command_git_command     "{{ $bash }} {{ $scripts }}/git.sh"
                 command_git_format     "#[fg=#C4A000,bold] {stdout}"
                 command_git_interval   "30"
                 command_git_rendermode "static"
 
                 // CPU usage
-                command_cpu_command    "/usr/bin/bash /home/admin/.config/zellij/scripts/cpu.sh"
+                command_cpu_command    "{{ $bash }} {{ $scripts }}/cpu.sh"
                 command_cpu_format    "#[fg=#555555] {stdout}"
                 command_cpu_interval  "5"
                 command_cpu_rendermode "static"
 
                 // RAM usage
-                command_ram_command    "/usr/bin/bash /home/admin/.config/zellij/scripts/ram.sh"
+                command_ram_command    "{{ $bash }} {{ $scripts }}/ram.sh"
                 command_ram_format    "#[fg=#555555] 󰍛 {stdout}"
                 command_ram_interval  "5"
                 command_ram_rendermode "static"
 
                 // Load average
-                command_load_command    "/usr/bin/bash /home/admin/.config/zellij/scripts/load.sh"
+                command_load_command    "{{ $bash }} {{ $scripts }}/load.sh"
                 command_load_format    "#[fg=#555555] 󰔏 {stdout}"
                 command_load_interval  "5"
                 command_load_rendermode "static"
 
                 // Uptime
-                command_uptime_command    "/usr/bin/bash -c 'uptime -p | sed s/up //'"
+                command_uptime_command    "{{ $bash }} {{ $scripts }}/uptime.sh"
                 command_uptime_format    "#[fg=#555555] 󰅐 {stdout}"
                 command_uptime_interval  "60"
                 command_uptime_rendermode "static"
 
                 // Hostname
-                command_host_command    "/usr/bin/cat /proc/sys/kernel/hostname"
+                command_host_command    "{{ $bash }} {{ $scripts }}/host.sh"
                 command_host_format    "#[fg=#555555] 󰒋 {stdout}"
                 command_host_interval  "0"
                 command_host_rendermode "static"

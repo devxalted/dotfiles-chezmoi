@@ -131,6 +131,9 @@ alias hx="helix"
 {{ end -}}
 
 # ZK notes
+{{- if eq .chezmoi.os "darwin" }}
+alias zk='zk --notebook-dir ~/notes'
+{{- end }}
 alias notes='zk'
 
 # Just
